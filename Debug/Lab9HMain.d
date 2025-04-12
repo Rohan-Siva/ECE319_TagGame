@@ -34,7 +34,7 @@ Lab9HMain.o: ../Lab9HMain.cpp \
  ../../inc/ST7735.h ../../inc/Clock.h ../../inc/LaunchPad.h \
  ../../inc/TExaS.h ../../inc/Timer.h ../../inc/SlidePot.h \
  ../../inc/DAC5.h ../SmallFont.h ../LED.h ../Switch.h ../Sound.h \
- ../images/images.h ../Map.h
+ ../images/images.h ../Map.h ../Player.h
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/msp.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/DeviceFamily.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/m0p/mspm0g350x.h:
@@ -78,3 +78,4 @@ Lab9HMain.o: ../Lab9HMain.cpp \
 ../Sound.h:
 ../images/images.h:
 ../Map.h:
+../Player.h:

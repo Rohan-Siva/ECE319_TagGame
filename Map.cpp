@@ -1,5 +1,8 @@
 #include "Map.h"
 #include "../inc/ST7735.h"
+#include "Player.h"
+extern Player player1;
+extern Player player2;
 
 // 8x8 solid wall tile
 const uint16_t WallSprite[64] = {
@@ -218,5 +221,12 @@ void NextRulesPage(void) {
 }
 
 void DrawScores(void){
+  ST7735_FillScreen(0x0000); // Clear to black
+  ST7735_SetCursor(0, 0);
+  ST7735_OutString((char*)"P1:");
+  ST7735_OutUDec(player1.getScore());
   
+  ST7735_SetCursor(10, 0);
+  ST7735_OutString((char*)"P2:");
+  ST7735_OutUDec(player2.getScore());
 }

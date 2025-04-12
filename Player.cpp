@@ -21,8 +21,18 @@ void Player::reset() {
   powerup = PowerupType::None;
 }
 
-uint8_t Player::getX() const { return x; }
-uint8_t Player::getY() const { return y; }
-uint8_t Player::getScore() const { return score; }
-PowerupType Player::getPowerup() const { return powerup; }
-bool Player::isChaser() const { return chaser; }
+uint8_t Player::getX() const { 
+    return x; 
+}
+uint8_t Player::getY() const { 
+    return y; 
+}
+uint8_t Player::getScore() const { 
+    return score; 
+}
+PowerupType Player::getPowerup() const { 
+    return powerup; 
+}
+bool Player::isChaser() const { 
+    return chaser; 
+}

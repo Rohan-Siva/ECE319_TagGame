@@ -10,6 +10,7 @@ CPP_SRCS += \
 ../Lab9HMain.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/LaunchPad.cpp \
 ../Map.cpp \
+../Player.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/SPI.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/ST7735.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/SlidePot.cpp \
@@ -29,6 +30,7 @@ OBJS += \
 ./Lab9HMain.o \
 ./LaunchPad.o \
 ./Map.o \
+./Player.o \
 ./SPI.o \
 ./ST7735.o \
 ./SlidePot.o \
@@ -45,6 +47,7 @@ CPP_DEPS += \
 ./Lab9HMain.d \
 ./LaunchPad.d \
 ./Map.d \
+./Player.d \
 ./SPI.d \
 ./ST7735.d \
 ./SlidePot.d \
@@ -61,6 +64,7 @@ OBJS__QUOTED += \
 "Lab9HMain.o" \
 "LaunchPad.o" \
 "Map.o" \
+"Player.o" \
 "SPI.o" \
 "ST7735.o" \
 "SlidePot.o" \
@@ -77,6 +81,7 @@ CPP_DEPS__QUOTED += \
 "Lab9HMain.d" \
 "LaunchPad.d" \
 "Map.d" \
+"Player.d" \
 "SPI.d" \
 "ST7735.d" \
 "SlidePot.d" \
@@ -93,6 +98,7 @@ CPP_SRCS__QUOTED += \
 "../Lab9HMain.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/LaunchPad.cpp" \
 "../Map.cpp" \
+"../Player.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/SPI.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/ST7735.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/SlidePot.cpp" \

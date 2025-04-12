@@ -20,6 +20,7 @@
 #include "Sound.h"
 #include "images/images.h"
 #include "Map.h"
+#include "Player.h"
 extern "C" void __disable_irq(void);
 extern "C" void __enable_irq(void);
 extern "C" void TIMG12_IRQHandler(void);
@@ -116,7 +117,8 @@ int main1(void){ // main1
     }
   }
 }
-
+Player player1(1, 1, true);  // Chaser
+Player player2(14, 18, false); // Runner
 // use main2 to observe graphics
 int main(void){ // main2
   __disable_irq();
@@ -128,10 +130,16 @@ int main(void){ // main2
   //DrawMap();
   //DrawMenu();
   DrawRules();
-  Clock_Delay1ms(10000);
+  Clock_Delay1ms(1000);
   NextRulesPage();
-  Clock_Delay1ms(10000);
+  Clock_Delay1ms(1000);
   NextRulesPage();
+
+  
+  //player1.move(1, 0); // move right
+  player2.addScore(2);
+
+  DrawScores();
   // ST7735_FillScreen(ST7735_BLACK);
   //ST7735_DrawBitmap(22, 159, PlayerShip0, 18,8); // player ship bottom
   // ST7735_DrawBitmap(53, 151, Bunker0, 18,5);

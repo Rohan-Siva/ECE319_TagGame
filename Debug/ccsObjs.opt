@@ -4,6 +4,7 @@
 "./Lab9HMain.o"
 "./LaunchPad.o"
 "./Map.o"
+"./Player.o"
 "./SPI.o"
 "./ST7735.o"
 "./SlidePot.o"
