@@ -15,5 +15,6 @@ extern const uint16_t BorderSprite[64];   // 8x8 coin sprite
 extern const uint16_t SpeedSprite[64];
 
 void DrawMap(void);
+void DrawMenu(void);
 
 #endif // __MAP_H__

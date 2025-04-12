@@ -126,6 +126,7 @@ int main(void){ // main2
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
   DrawMap();
+  DrawMenu();
   // ST7735_FillScreen(ST7735_BLACK);
   //ST7735_DrawBitmap(22, 159, PlayerShip0, 18,8); // player ship bottom
   // ST7735_DrawBitmap(53, 151, Bunker0, 18,5);
