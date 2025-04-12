@@ -216,3 +216,7 @@ void NextRulesPage(void) {
   currentRulesPage = (currentRulesPage + 1) % RULES_PAGE_COUNT;
   DrawRules();
 }
+
+void DrawScores(void){
+  
+}

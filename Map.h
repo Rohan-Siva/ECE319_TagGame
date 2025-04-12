@@ -18,5 +18,6 @@ void DrawMap(void);
 void DrawMenu(void);
 void NextRulesPage(void);
 void DrawRules(void);
+void DrawScores(void);
 
 #endif // __MAP_H__
