@@ -16,5 +16,7 @@ extern const uint16_t SpeedSprite[64];
 
 void DrawMap(void);
 void DrawMenu(void);
+void NextRulesPage(void);
+void DrawRules(void);
 
 #endif // __MAP_H__
