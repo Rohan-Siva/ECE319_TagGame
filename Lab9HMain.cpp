@@ -128,7 +128,9 @@ int main(void){ // main2
     //note: if you colors are weird, see different options for
     // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
   //DrawMap();
-  //DrawMenu();
+  bool switchpressed = false;
+  DrawMap();
+  while(!switchpressed){}
   DrawRules();
   Clock_Delay1ms(1000);
   NextRulesPage();
