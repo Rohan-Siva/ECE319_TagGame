@@ -146,6 +146,7 @@ void DrawMap(void) {
 enum MenuSelection { MENU_PLAY, MENU_LANGUAGE, MENU_RULES };
 uint8_t currentSelection = MENU_PLAY;
 uint8_t language = 0; // 0 = English, 1 = Español
+MENU_COUNT = 3;
 
 void DrawMenu(void) {
   ST7735_FillScreen(0x0000); // black background
@@ -176,6 +177,32 @@ void DrawMenu(void) {
   ST7735_SetCursor(6, 6);
   ST7735_OutString((char *)(currentSelection == MENU_RULES ? "> Rules" : "  Rules"));
 }
+
+void NavigateMenu(int direction) {
+  if (direction == 1) {
+    currentSelection = (currentSelection + 1) % MENU_COUNT;
+  } else if (direction == -1) {
+    currentSelection = (currentSelection - 1 + MENU_COUNT) % MENU_COUNT;
+  }
+  DrawMenu();
+}
+
+void SelectMenuItem(void) {
+  switch (currentSelection) {
+    case MENU_PLAY:
+      DrawMap(); // Implement this function to transition to game
+      //StartGame();
+      break;
+    case MENU_LANGUAGE:
+      language = (language + 1) % 2; // Toggle between 0 and 1
+      DrawMenu(); // Refresh menu to show new language
+      break;
+    case MENU_RULES:
+      DrawRules(); // Implement this function to show rules screen
+      break;
+  }
+}
+
 
 #define RULES_PAGE_COUNT 3
 uint8_t currentRulesPage = 0;
