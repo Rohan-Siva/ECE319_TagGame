@@ -1,7 +1,13 @@
 #include "Player.h"
 
-Player::Player(uint8_t startX, uint8_t startY, bool isChaser)
-  : x(startX), y(startY), score(0), powerup(PowerupType::None), chaser(isChaser) {}
+Player::Player(uint8_t startX, uint8_t startY, bool isChaser) {
+  x = startX;
+  y = startY;
+  score = 0;
+  powerup = PowerupType::None;
+  chaser = isChaser;
+}
+
 
 void Player::move(int8_t dx, int8_t dy) {
   x += dx;

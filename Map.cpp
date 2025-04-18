@@ -123,6 +123,7 @@ uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
 
 
 void DrawMap(void) {
+  ST7735_FillScreen(0x0000);
   for (int row = 0; row < GRID_HEIGHT; row++) {
     for (int col = 0; col < GRID_WIDTH; col++) {
       int x = col * TILE_SIZE;
@@ -155,10 +156,8 @@ void DrawMap(void) {
 
 
 // MENU STUFF
-enum MenuSelection { MENU_PLAY, MENU_LANGUAGE, MENU_RULES };
 uint8_t currentSelection = MENU_PLAY;
 uint8_t language = 0; // 0 = English, 1 = Español
-MENU_COUNT = 3;
 
 void DrawMenu(void) {
   ST7735_FillScreen(0x0000); // black background
@@ -172,7 +171,7 @@ void DrawMenu(void) {
   // Option 2: Draw sprite instead (if you create one)
   //DrawLogo(28, 6);
 
-  ST7735_DrawBitmap(50, 80, TAGSprite, 64, 64);
+  //ST7735_DrawBitmap(50, 80, TAGSprite, 64, 64);
 
 
   // Reset color for menu
@@ -210,7 +209,7 @@ void SelectMenuItem(void) {
       DrawMenu(); // Refresh menu to show new language
       break;
     case MENU_RULES:
-      DrawRules(); // Implement this function to show rules screen
+      NextRulesPage(); // Implement this function to show rules screen
       break;
   }
 }
@@ -230,11 +229,11 @@ const char* rulesText[RULES_PAGE_COUNT][6] = {
   },
   {
     "Controls:",
-    "- 2 joysticks to move",
-    "- 2 buttons per player",
-    "  > Speed Boost",
-    "  > Plant mines",
-    "  > Missiles (maybe)",
+    "2 joysticks to move",
+    "2 buttons per player",
+    "> Speed Boost",
+    "> Plant mines",
+    "> Missiles (maybe)",
   },
   {
     "Scoring:",
@@ -261,8 +260,13 @@ void DrawRules(void) {
   ST7735_OutString((char *)"Press Btn -> Next");
 }
 void NextRulesPage(void) {
-  currentRulesPage = (currentRulesPage + 1) % RULES_PAGE_COUNT;
+  if(currentRulesPage==RULES_PAGE_COUNT){
+    DrawMenu();
+    currentRulesPage = 0;
+    return;
+  }
   DrawRules();
+  currentRulesPage = (currentRulesPage + 1);
 }
 
 void DrawScores(void){

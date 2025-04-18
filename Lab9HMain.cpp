@@ -21,6 +21,7 @@
 #include "images/images.h"
 #include "Map.h"
 #include "Player.h"
+#include "Switch.h"
 extern "C" void __disable_irq(void);
 extern "C" void __enable_irq(void);
 extern "C" void TIMG12_IRQHandler(void);
@@ -119,8 +120,65 @@ int main1(void){ // main1
 }
 Player player1(1, 1, true);  // Chaser
 Player player2(14, 18, false); // Runner
+
+int main(void){ // testing the game
+  __disable_irq();
+  PLL_Init(); // set bus speed
+  LaunchPad_Init();
+  ST7735_InitPrintf();
+  Switch_Init();
+    //note: if you colors are weird, see different options for
+    // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
+  //DrawMap();
+  DrawMenu();
+  while (1) {
+    bool godown = Switch_MenuDownPressed();
+    bool selected = Switch_MenuSelectPressed();
+
+    if (selected) { // select button pressed
+      SelectMenuItem();
+      Clock_Delay1ms(500);
+
+      // If in rules, wait for another press to advance page
+      if (currentSelection == MENU_RULES) {
+        while (1) {
+          bool nextpage = Switch_MenuSelectPressed();
+          if (nextpage) {
+            NextRulesPage();
+            Clock_Delay1ms(300);
+          }
+          if(currentRulesPage==0){
+            break;
+          }
+        }
+      }
+    }
+    else if(godown){
+      NavigateMenu(1);
+      Clock_Delay1ms(200);
+
+    }
+
+  }
+  DrawMap();
+  //while(!switchpressed){}
+  DrawRules();
+  Clock_Delay1ms(1000);
+  NextRulesPage();
+  Clock_Delay1ms(1000);
+  NextRulesPage();
+
+  
+  //player1.move(1, 0); // move right
+  player2.addScore(2);
+
+  DrawScores();
+
+  while(1){
+  }
+}
 // use main2 to observe graphics
-int main(void){ // main2
+int main2(void){ // main2
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
