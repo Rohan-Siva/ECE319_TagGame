@@ -1,7 +1,7 @@
 ******************************************************************************
             TI ARM Clang Linker Unix v4.0.1                    
 ******************************************************************************
->> Linked Thu Apr 17 23:59:21 2025
+>> Linked Fri Apr 18 00:09:20 2025
 
 OUTPUT FILE NAME:   <ECE319K_Lab9H.out>
 ENTRY POINT SYMBOL: "_c_int00_noargs"  address: 00002151
@@ -11,8 +11,8 @@ MEMORY CONFIGURATION
 
          name            origin    length      used     unused   attr    fill
 ----------------------  --------  ---------  --------  --------  ----  --------
-  FLASH                 00000000   00020000  00002f58  0001d0a8  R  X
-  SRAM                  20200000   00008000  00000974  0000768c  RW X
+  FLASH                 00000000   00020000  00002f78  0001d088  R  X
+  SRAM                  20200000   00008000  000009a4  0000765c  RW X
   BCR_CONFIG            41c00000   00000080  00000000  00000080  R   
   BSL_CONFIG            41c00100   00000080  00000000  00000080  R   
 
@@ -21,16 +21,16 @@ SEGMENT ALLOCATION MAP
 
 run origin  load origin   length   init length attrs members
 ----------  ----------- ---------- ----------- ----- -------
-00000000    00000000    00002f58   00002f58    r-x
+00000000    00000000    00002f78   00002f78    r-x
   00000000    00000000    000000c0   000000c0    r-- .intvecs
   000000c0    000000c0    00002350   00002350    r-x .text
-  00002410    00002410    00000a18   00000a18    r-- .rodata
-  00002e28    00002e28    00000008   00000008    r-- .init_array
-  00002e30    00002e30    00000128   00000128    r-- .cinit
-20200000    20200000    00000777   00000000    rw-
-  20200000    20200000    0000039d   00000000    rw- .data
-  202003a0    202003a0    00000200   00000000    rw- .sysmem
-  202005a0    202005a0    000001d7   00000000    rw- .bss
+  00002410    00002410    00000a30   00000a30    r-- .rodata
+  00002e40    00002e40    00000008   00000008    r-- .init_array
+  00002e48    00002e48    00000130   00000130    r-- .cinit
+20200000    20200000    000007a7   00000000    rw-
+  20200000    20200000    000003cd   00000000    rw- .data
+  202003d0    202003d0    00000200   00000000    rw- .sysmem
+  202005d0    202005d0    000001d7   00000000    rw- .bss
 20207e00    20207e00    00000200   00000000    rw-
   20207e00    20207e00    00000200   00000000    rw- .stack
 
@@ -158,15 +158,15 @@ section   page    origin      length       input sections
                   000023fe    00000004            : exit.c.obj (.text:abort)
                   00002402    0000000e     --HOLE-- [fill = 0]
 
-.cinit     0    00002e30    00000128     
-                  00002e30    000000fd     (.cinit..data.load) [load image, compression = lzss]
-                  00002f2d    00000003     --HOLE-- [fill = 0]
-                  00002f30    0000000c     (__TI_handler_table)
-                  00002f3c    00000008     (.cinit..bss.load) [load image, compression = zero_init]
-                  00002f44    00000010     (__TI_cinit_table)
-                  00002f54    00000004     --HOLE-- [fill = 0]
+.cinit     0    00002e48    00000130     
+                  00002e48    00000105     (.cinit..data.load) [load image, compression = lzss]
+                  00002f4d    00000003     --HOLE-- [fill = 0]
+                  00002f50    0000000c     (__TI_handler_table)
+                  00002f5c    00000008     (.cinit..bss.load) [load image, compression = zero_init]
+                  00002f64    00000010     (__TI_cinit_table)
+                  00002f74    00000004     --HOLE-- [fill = 0]
 
-.rodata    0    00002410    00000a18     
+.rodata    0    00002410    00000a30     
                   00002410    000004fb     ST7735.o (.rodata._ZL4Font)
                   0000290b    00000001     Map.o (.rodata.str1.104596856956816455781)
                   0000290c    00000080     Map.o (.rodata.BorderSprite)
@@ -177,87 +177,89 @@ section   page    origin      length       input sections
                   00002b8c    00000080     Map.o (.rodata.WallSprite)
                   00002c0c    0000003b     ST7735.o (.rodata._ZL5Rcmd1)
                   00002c47    0000002b     ST7735.o (.rodata._ZL5Rcmd3)
-                  00002c72    00000018     Map.o (.rodata.str1.88020652275042292911)
-                  00002c8a    00000016     ST7735.o (.rodata.str1.10454047957466484921)
-                  00002ca0    00000016     Map.o (.rodata.str1.73765608726033296121)
-                  00002cb6    00000015     Map.o (.rodata.str1.84046251035583987611)
-                  00002ccb    00000014     Map.o (.rodata.str1.105329869645890702911)
-                  00002cdf    00000014     Map.o (.rodata.str1.11892335321669509361)
-                  00002cf3    00000014     Map.o (.rodata.str1.142248726879783284881)
-                  00002d07    00000014     Map.o (.rodata.str1.56202311474261802091)
-                  00002d1b    00000013     Map.o (.rodata.str1.141450585037438433001)
-                  00002d2e    00000013     Map.o (.rodata.str1.174713602682270873741)
-                  00002d41    00000012     Map.o (.rodata.str1.107916156524046124021)
-                  00002d53    00000012     Map.o (.rodata.str1.50855458835255299231)
-                  00002d65    00000011     Map.o (.rodata.str1.89352664702768437881)
-                  00002d76    0000000e     Map.o (.rodata.str1.116554702338864380131)
-                  00002d84    0000000e     Map.o (.rodata.str1.148507566663670628311)
-                  00002d92    0000000d     ST7735.o (.rodata._ZL10Rcmd2green)
-                  00002d9f    0000000d     ST7735.o (.rodata._ZL8Rcmd2red)
-                  00002dac    0000000d     Map.o (.rodata.str1.112519537372094380871)
-                  00002db9    0000000d     Map.o (.rodata.str1.148345599293076453791)
-                  00002dc6    0000000a     Map.o (.rodata.str1.69355853717354042871)
-                  00002dd0    00000009     Map.o (.rodata.str1.122246070243964392101)
-                  00002dd9    00000009     Map.o (.rodata.str1.93950474351652273581)
-                  00002de2    00000008     Map.o (.rodata.str1.179609936499601495561)
-                  00002dea    00000008     Map.o (.rodata.str1.29074602043393431931)
-                  00002df2    00000008     ST7735.o (.rodata.str1.47795681660940027721)
-                  00002dfa    00000008     Map.o (.rodata.str1.70551619931739254801)
-                  00002e02    00000007     Map.o (.rodata.str1.112394934285709906361)
-                  00002e09    00000007     ST7735.o (.rodata.str1.144587199919105078391)
-                  00002e10    00000007     Map.o (.rodata.str1.146512124620236989091)
-                  00002e17    00000007     Map.o (.rodata.str1.152947731988548161181)
-                  00002e1e    00000007     ST7735.o (.rodata.str1.65889865058515175131)
-                  00002e25    00000002     ST7735.o (.rodata.str1.12956530834739612181)
-                  00002e27    00000001     --HOLE-- [fill = 0]
+                  00002c72    00000016     ST7735.o (.rodata.str1.10454047957466484921)
+                  00002c88    00000015     Map.o (.rodata.str1.11892335321669509361)
+                  00002c9d    00000015     Map.o (.rodata.str1.174713602682270873741)
+                  00002cb2    00000015     Map.o (.rodata.str1.73765608726033296121)
+                  00002cc7    00000014     Map.o (.rodata.str1.105329869645890702911)
+                  00002cdb    00000014     Map.o (.rodata.str1.142248726879783284881)
+                  00002cef    00000014     Map.o (.rodata.str1.67017573524192918981)
+                  00002d03    00000013     Map.o (.rodata.str1.56202311474261802091)
+                  00002d16    00000012     Map.o (.rodata.str1.107916156524046124021)
+                  00002d28    00000012     Map.o (.rodata.str1.160268990308799969531)
+                  00002d3a    00000011     Map.o (.rodata.str1.89352664702768437881)
+                  00002d4b    00000011     Map.o (.rodata.str1.94772824188764248821)
+                  00002d5c    00000010     Map.o (.rodata.str1.122246070243964392101)
+                  00002d6c    00000010     Map.o (.rodata.str1.141450585037438433001)
+                  00002d7c    0000000f     Map.o (.rodata.str1.84046251035583987611)
+                  00002d8b    0000000e     Map.o (.rodata.str1.50855458835255299231)
+                  00002d99    0000000d     ST7735.o (.rodata._ZL10Rcmd2green)
+                  00002da6    0000000d     ST7735.o (.rodata._ZL8Rcmd2red)
+                  00002db3    0000000d     Map.o (.rodata.str1.112519537372094380871)
+                  00002dc0    0000000d     Map.o (.rodata.str1.148345599293076453791)
+                  00002dcd    0000000a     Map.o (.rodata.str1.116554702338864380131)
+                  00002dd7    0000000a     Map.o (.rodata.str1.69355853717354042871)
+                  00002de1    00000009     Map.o (.rodata.str1.88020652275042292911)
+                  00002dea    00000009     Map.o (.rodata.str1.93950474351652273581)
+                  00002df3    00000008     Map.o (.rodata.str1.148507566663670628311)
+                  00002dfb    00000008     Map.o (.rodata.str1.179609936499601495561)
+                  00002e03    00000008     Map.o (.rodata.str1.29074602043393431931)
+                  00002e0b    00000008     ST7735.o (.rodata.str1.47795681660940027721)
+                  00002e13    00000008     Map.o (.rodata.str1.70551619931739254801)
+                  00002e1b    00000007     Map.o (.rodata.str1.112394934285709906361)
+                  00002e22    00000007     ST7735.o (.rodata.str1.144587199919105078391)
+                  00002e29    00000007     Map.o (.rodata.str1.146512124620236989091)
+                  00002e30    00000007     Map.o (.rodata.str1.152947731988548161181)
+                  00002e37    00000007     ST7735.o (.rodata.str1.65889865058515175131)
+                  00002e3e    00000002     ST7735.o (.rodata.str1.12956530834739612181)
 
 .init_array 
-*          0    00002e28    00000008     
-                  00002e28    00000004     Lab9HMain.o (.init_array)
-                  00002e2c    00000004     --HOLE-- [fill = 0]
+*          0    00002e40    00000008     
+                  00002e40    00000004     Lab9HMain.o (.init_array)
+                  00002e44    00000004     --HOLE-- [fill = 0]
 
-.data      0    20200000    0000039d     UNINITIALIZED
+.data      0    20200000    000003cd     UNINITIALIZED
                   20200000    00000140     Map.o (.data.map)
                   20200140    000000f0     libc.a : defs.c.obj (.data._ftable)
                   20200230    00000078     libsysbm.a : host_device.c.obj (.data._device)
-                  202002a8    00000050                : host_device.c.obj (.data._stream)
-                  202002f8    00000048     Map.o (.data.rulesText)
-                  20200340    00000014     Lab9HMain.o (.data.Sensor)
-                  20200354    0000000c     Lab9HMain.o (.data.player1)
-                  20200360    0000000c     Lab9HMain.o (.data.player2)
-                  2020036c    00000008     libc.a : exit.c.obj (.data..L_MergedGlobals)
-                  20200374    00000004     Clock.o (.data.BusFreq)
-                  20200378    00000004     ST7735.o (.data.StX)
-                  2020037c    00000004     ST7735.o (.data.StY)
-                  20200380    00000004     libc.a : defs.c.obj (.data.__TI_ft_end)
-                  20200384    00000004            : _lock.c.obj (.data._lock)
-                  20200388    00000004            : _lock.c.obj (.data._unlock)
-                  2020038c    00000002     ST7735.o (.data.StTextColor)
-                  2020038e    00000002     ST7735.o (.data._ZL6_width)
-                  20200390    00000002     ST7735.o (.data._ZL7_height)
-                  20200392    00000001     Map.o (.data.currentRulesPage)
-                  20200393    00000001     Map.o (.data.currentSelection)
-                  20200394    00000001     libsysbm.a : add_device.c.obj (.data.add_device.device_init)
-                  20200395    00000001     Map.o (.data.language)
-                  20200396    00000002     --HOLE--
-                  20200398    00000001     libc.a : memory.c.obj (.data.memory_is_initialized)
-                  20200399    00000003     --HOLE--
-                  2020039c    00000001     libsysbm.a : open.c.obj (.data.open.stream_init)
+                  202002a8    00000078     Map.o (.data.rulesText)
+                  20200320    00000050     libsysbm.a : host_device.c.obj (.data._stream)
+                  20200370    00000014     Lab9HMain.o (.data.Sensor)
+                  20200384    0000000c     Lab9HMain.o (.data.player1)
+                  20200390    0000000c     Lab9HMain.o (.data.player2)
+                  2020039c    00000008     libc.a : exit.c.obj (.data..L_MergedGlobals)
+                  202003a4    00000004     Clock.o (.data.BusFreq)
+                  202003a8    00000004     ST7735.o (.data.StX)
+                  202003ac    00000004     ST7735.o (.data.StY)
+                  202003b0    00000004     libc.a : defs.c.obj (.data.__TI_ft_end)
+                  202003b4    00000004            : _lock.c.obj (.data._lock)
+                  202003b8    00000004            : _lock.c.obj (.data._unlock)
+                  202003bc    00000002     ST7735.o (.data.StTextColor)
+                  202003be    00000002     ST7735.o (.data._ZL6_width)
+                  202003c0    00000002     ST7735.o (.data._ZL7_height)
+                  202003c2    00000001     Map.o (.data.currentRulesPage)
+                  202003c3    00000001     Map.o (.data.currentSelection)
+                  202003c4    00000001     libsysbm.a : add_device.c.obj (.data.add_device.device_init)
+                  202003c5    00000001     Map.o (.data.language)
+                  202003c6    00000002     --HOLE--
+                  202003c8    00000001     libc.a : memory.c.obj (.data.memory_is_initialized)
+                  202003c9    00000003     --HOLE--
+                  202003cc    00000001     libsysbm.a : open.c.obj (.data.open.stream_init)
 
-.sysmem    0    202003a0    00000200     UNINITIALIZED
-                  202003a0    00000010     libc.a : memory.c.obj (.sysmem)
-                  202003b0    000001f0     --HOLE--
+.sysmem    0    202003d0    00000200     UNINITIALIZED
+                  202003d0    00000010     libc.a : memory.c.obj (.sysmem)
+                  202003e0    000001f0     --HOLE--
 
-.bss       0    202005a0    000001d7     UNINITIALIZED
-                  202005a0    00000120     libsysbm.a : trgmsg.c.obj (.bss:_CIOBUF_)
-                  202006c0    000000a0     libc.a : defs.c.obj (.bss.__TI_tmpnams)
-                  20200760    00000008     libsysbm.a : hostopen.c.obj (.bss.parmbuf)
-                  20200768    00000004     TExaS.o (.bss.TExaSLogic)
-                  2020076c    00000004     TExaS.o (.bss.TExaSadc)
-                  20200770    00000004     libc.a : memory.c.obj (.bss.sys_free)
-                  20200774    00000001     ST7735.o (.bss._ZL8ColStart)
-                  20200775    00000001     ST7735.o (.bss._ZL8RowStart)
-                  20200776    00000001     ST7735.o (.bss._ZL8TabColor)
+.bss       0    202005d0    000001d7     UNINITIALIZED
+                  202005d0    00000120     libsysbm.a : trgmsg.c.obj (.bss:_CIOBUF_)
+                  202006f0    000000a0     libc.a : defs.c.obj (.bss.__TI_tmpnams)
+                  20200790    00000008     libsysbm.a : hostopen.c.obj (.bss.parmbuf)
+                  20200798    00000004     TExaS.o (.bss.TExaSLogic)
+                  2020079c    00000004     TExaS.o (.bss.TExaSadc)
+                  202007a0    00000004     libc.a : memory.c.obj (.bss.sys_free)
+                  202007a4    00000001     ST7735.o (.bss._ZL8ColStart)
+                  202007a5    00000001     ST7735.o (.bss._ZL8RowStart)
+                  202007a6    00000001     ST7735.o (.bss._ZL8TabColor)
 
 .stack     0    20207e00    00000200     UNINITIALIZED
                   20207e00    00000004     libc.a : boot_cortex_m.c.obj (.stack)
@@ -275,7 +277,7 @@ MODULE SUMMARY
        ------                         ----   -------   -------
     ./
        ST7735.o                       2656   1449      17     
-       Map.o                          808    1134      395    
+       Map.o                          808    1159      443    
        Clock.o                        516    0         4      
        SPI.o                          440    0         0      
        Lab9HMain.o                    318    4         44     
@@ -286,7 +288,7 @@ MODULE SUMMARY
        SlidePot.o                     26     0         0      
        Sound.o                        2      0         0      
     +--+------------------------------+------+---------+---------+
-       Total:                         5176   2587      468    
+       Total:                         5176   2612      516    
                                                               
     ./ticlang/
        startup_mspm0g3507_ticlang.o   60     192       0      
@@ -344,21 +346,21 @@ MODULE SUMMARY
                                                               
        Heap:                          0      0         512    
        Stack:                         0      0         512    
-       Linker Generated:              0      289       0      
+       Linker Generated:              0      297       0      
     +--+------------------------------+------+---------+---------+
-       Grand Total:                   9020   3068      2415   
+       Grand Total:                   9020   3101      2463   
 
 
 LINKER GENERATED COPY TABLES
 
-__TI_cinit_table @ 00002f44 records: 2, size/record: 8, table size: 16
-	.data: load addr=00002e30, load size=000000fd bytes, run addr=20200000, run size=0000039d bytes, compression=lzss
-	.bss: load addr=00002f3c, load size=00000008 bytes, run addr=202005a0, run size=000001d7 bytes, compression=zero_init
+__TI_cinit_table @ 00002f64 records: 2, size/record: 8, table size: 16
+	.data: load addr=00002e48, load size=00000105 bytes, run addr=20200000, run size=000003cd bytes, compression=lzss
+	.bss: load addr=00002f5c, load size=00000008 bytes, run addr=202005d0, run size=000001d7 bytes, compression=zero_init
 
 
 LINKER GENERATED HANDLER TABLE
 
-__TI_handler_table @ 00002f30 records: 3, size/record: 4, table size: 12
+__TI_handler_table @ 00002f50 records: 3, size/record: 4, table size: 12
 	index: 0, handler: __TI_decompress_lzss
 	index: 1, handler: __TI_decompress_none
 	index: 2, handler: __TI_zero_init
@@ -372,7 +374,7 @@ address   name
 000021bd  ADC1_IRQHandler              
 000021bd  AES_IRQHandler               
 0000290c  BorderSprite                 
-20200374  BusFreq                      
+202003a4  BusFreq                      
 000023fe  C$$EXIT                      
 00001ef9  C$$IO$$                      
 000021bd  CANFD0_IRQHandler            
@@ -398,19 +400,19 @@ address   name
 000021bd  RTC_IRQHandler               
 000023f7  Reset_Handler                
 00002a8c  RunnerSprite                 
-00002e28  SHT$$INIT_ARRAY$$Base        
-00002e2c  SHT$$INIT_ARRAY$$Limit       
+00002e40  SHT$$INIT_ARRAY$$Base        
+00002e44  SHT$$INIT_ARRAY$$Limit       
 000021bd  SPI0_IRQHandler              
 000021bd  SPI1_IRQHandler              
 000021bd  SVC_Handler                  
-20200340  Sensor                       
+20200370  Sensor                       
 00002b0c  SpeedSprite                  
-2020038c  StTextColor                  
-20200378  StX                          
-2020037c  StY                          
+202003bc  StTextColor                  
+202003a8  StX                          
+202003ac  StY                          
 0000116b  SysTick_Handler              
-20200768  TExaSLogic                   
-2020076c  TExaSadc                     
+20200798  TExaSLogic                   
+2020079c  TExaSadc                     
 000021bd  TIMA0_IRQHandler             
 000021bd  TIMA1_IRQHandler             
 000021bd  TIMG0_IRQHandler             
@@ -425,7 +427,7 @@ address   name
 000021bd  UART2_IRQHandler             
 000021bd  UART3_IRQHandler             
 00002b8c  WallSprite                   
-202005a0  _CIOBUF_                     
+202005d0  _CIOBUF_                     
 000023a1  _Z10Clock_Freqv              
 00002349  _Z11Clock_Delayj             
 00001d59  _Z11SPI_OutDatac             
@@ -470,7 +472,7 @@ address   name
 00001ffd  _ZN6PlayerC2Ehhb             
 00002249  _ZN8SlidePotC1Ejj            
 00002249  _ZN8SlidePotC2Ejj            
-202005a0  __CIOBUF_                    
+202005d0  __CIOBUF_                    
 20208000  __STACK_END                  
 00000200  __STACK_SIZE                 
 00000200  __SYSMEM_SIZE                
@@ -483,26 +485,26 @@ address   name
 00000000  __TI_ATRegion2_region_sz     
 00000000  __TI_ATRegion2_src_addr      
 00000000  __TI_ATRegion2_trg_addr      
-00002f44  __TI_CINIT_Base              
-00002f54  __TI_CINIT_Limit             
-00002f54  __TI_CINIT_Warm              
-00002f30  __TI_Handler_Table_Base      
-00002f3c  __TI_Handler_Table_Limit     
+00002f64  __TI_CINIT_Base              
+00002f74  __TI_CINIT_Limit             
+00002f74  __TI_CINIT_Warm              
+00002f50  __TI_Handler_Table_Base      
+00002f5c  __TI_Handler_Table_Limit     
 000019ed  __TI_auto_init_nobinit       
 00001e65  __TI_cleanup                 
-2020036c  __TI_cleanup_ptr             
+2020039c  __TI_cleanup_ptr             
 00001559  __TI_closefile               
 000015d5  __TI_decompress_lzss         
 00002327  __TI_decompress_none         
 00001a41  __TI_doflush                 
-20200370  __TI_dtors_ptr               
-20200380  __TI_ft_end                  
+202003a0  __TI_dtors_ptr               
+202003b0  __TI_ft_end                  
 ffffffff  __TI_pprof_out_hndl          
 ffffffff  __TI_prof_data_size          
 ffffffff  __TI_prof_data_start         
 00001e99  __TI_readmsg                 
 00000000  __TI_static_base__           
-202006c0  __TI_tmpnams                 
+202006f0  __TI_tmpnams                 
 00001ecd  __TI_writemsg                
 000022c1  __TI_zero_init_nomemset      
 00001a93  __aeabi_idiv0                
@@ -524,20 +526,20 @@ UNDEFED   __mpu_init
 00002151  _c_int00_noargs              
 20200230  _device                      
 20200140  _ftable                      
-20200384  _lock                        
+202003b4  _lock                        
 0000202b  _nop                         
-202002a8  _stream                      
-202003a0  _sys_memory                  
+20200320  _stream                      
+202003d0  _sys_memory                  
 UNDEFED   _system_post_cinit           
 000023fb  _system_pre_init             
-20200388  _unlock                      
+202003b8  _unlock                      
 000023ff  abort                        
 00000bc1  add_device                   
 000009b5  aligned_alloc                
 ffffffff  binit                        
 00001ae5  close                        
-20200392  currentRulesPage             
-20200393  currentSelection             
+202003c2  currentRulesPage             
+202003c3  currentSelection             
 00001f01  exit                         
 00001f35  finddevice                   
 00001fcd  fopen                        
@@ -545,17 +547,17 @@ ffffffff  binit
 00001f69  freopen                      
 0000180d  getdevice                    
 00000000  interruptVectors             
-20200395  language                     
+202003c5  language                     
 0000100d  main                         
 000023c5  malloc                       
 20200000  map                          
 000009b5  memalign                     
 0000116d  open                         
-20200760  parmbuf                      
-20200354  player1                      
-20200360  player2                      
+20200790  parmbuf                      
+20200384  player1                      
+20200390  player2                      
 000023ef  remove                       
-202002f8  rulesText                    
+202002a8  rulesText                    
 00000d95  setvbuf                      
 000013d1  strcmp                       
 00002085  unlink                       
@@ -711,13 +713,13 @@ address   name
 00002a8c  RunnerSprite                 
 00002b0c  SpeedSprite                  
 00002b8c  WallSprite                   
-00002e28  SHT$$INIT_ARRAY$$Base        
-00002e2c  SHT$$INIT_ARRAY$$Limit       
-00002f30  __TI_Handler_Table_Base      
-00002f3c  __TI_Handler_Table_Limit     
-00002f44  __TI_CINIT_Base              
-00002f54  __TI_CINIT_Limit             
-00002f54  __TI_CINIT_Warm              
+00002e40  SHT$$INIT_ARRAY$$Base        
+00002e44  SHT$$INIT_ARRAY$$Limit       
+00002f50  __TI_Handler_Table_Base      
+00002f5c  __TI_Handler_Table_Limit     
+00002f64  __TI_CINIT_Base              
+00002f74  __TI_CINIT_Limit             
+00002f74  __TI_CINIT_Warm              
 20200000  __start___llvm_prf_bits      
 20200000  __start___llvm_prf_cnts      
 20200000  __stop___llvm_prf_bits       
@@ -725,30 +727,30 @@ address   name
 20200000  map                          
 20200140  _ftable                      
 20200230  _device                      
-202002a8  _stream                      
-202002f8  rulesText                    
-20200340  Sensor                       
-20200354  player1                      
-20200360  player2                      
-2020036c  __TI_cleanup_ptr             
-20200370  __TI_dtors_ptr               
-20200374  BusFreq                      
-20200378  StX                          
-2020037c  StY                          
-20200380  __TI_ft_end                  
-20200384  _lock                        
-20200388  _unlock                      
-2020038c  StTextColor                  
-20200392  currentRulesPage             
-20200393  currentSelection             
-20200395  language                     
-202003a0  _sys_memory                  
-202005a0  _CIOBUF_                     
-202005a0  __CIOBUF_                    
-202006c0  __TI_tmpnams                 
-20200760  parmbuf                      
-20200768  TExaSLogic                   
-2020076c  TExaSadc                     
+202002a8  rulesText                    
+20200320  _stream                      
+20200370  Sensor                       
+20200384  player1                      
+20200390  player2                      
+2020039c  __TI_cleanup_ptr             
+202003a0  __TI_dtors_ptr               
+202003a4  BusFreq                      
+202003a8  StX                          
+202003ac  StY                          
+202003b0  __TI_ft_end                  
+202003b4  _lock                        
+202003b8  _unlock                      
+202003bc  StTextColor                  
+202003c2  currentRulesPage             
+202003c3  currentSelection             
+202003c5  language                     
+202003d0  _sys_memory                  
+202005d0  _CIOBUF_                     
+202005d0  __CIOBUF_                    
+202006f0  __TI_tmpnams                 
+20200790  parmbuf                      
+20200798  TExaSLogic                   
+2020079c  TExaSadc                     
 20207e00  __stack                      
 20208000  __STACK_END                  
 ffffffff  __TI_pprof_out_hndl          

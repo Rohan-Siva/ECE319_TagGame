@@ -218,47 +218,59 @@ void SelectMenuItem(void) {
 #define RULES_PAGE_COUNT 3
 uint8_t currentRulesPage = 0;
 
-const char* rulesText[RULES_PAGE_COUNT][6] = {
+const char* rulesText[RULES_PAGE_COUNT][10] = {
   {
     "TAG-2P Chasing Game",
     "",
     "1 player is Chaser,",
     "other is Runner.",
+    "",
     "Collect coins or ",
-    "chase!"
+    "chase!",
+    "",
+    "",
+    "" // 4 extra lines
   },
   {
     "Controls:",
-    "2 joysticks to move",
-    "2 buttons per player",
-    "> Speed Boost",
-    "> Plant mines",
-    "> Missiles (maybe)",
+    "",
+    " 2 joysticks to move",
+    " 2 buttons per",
+    " player",
+    "",
+    "Powerups:",
+    "  > Speed Boost",
+    "  > Plant mines",
+    "  > Missiles (maybe)" 
   },
   {
     "Scoring:",
+    "",
     "+1: Chaser catches",
-    "+2: Runner collects all",
+    "",
+    "+2: Runner collects ",
+    "    all coins",
+    "",
     "+1: Runner survives",
     "",
-    "First to 3 or 5 wins!"
+    "First to 3 wins!" 
   }
 };
-
 
 void DrawRules(void) {
   ST7735_FillScreen(0x0000); // Clear to black
   ST7735_SetTextColor(0xFFFF); // White
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 10; i++) {
     ST7735_SetCursor(0, i);
     ST7735_OutString((char *)rulesText[currentRulesPage][i]);
   }
 
-  ST7735_SetCursor(0, 7);
+  ST7735_SetCursor(0, 11);
   ST7735_SetTextColor(0x07E0); // Green
   ST7735_OutString((char *)"Press Btn -> Next");
 }
+
 void NextRulesPage(void) {
   if(currentRulesPage==RULES_PAGE_COUNT){
     DrawMenu();
