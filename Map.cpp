@@ -12,7 +12,7 @@ extern Player player2;
 uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-  {2,1,0,1,1,1,1,0,1,1,1,1,0,1,5,2},
+  {2,1,0,1,1,1,1,0,1,1,1,1,0,1,0,2},
   {2,1,0,1,4,0,0,1,0,0,0,1,0,0,0,2},
   {2,1,0,1,0,1,0,1,1,1,0,1,1,1,0,2},
   {2,1,0,0,0,1,0,0,0,1,0,0,0,1,0,2},
@@ -28,7 +28,7 @@ uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
   {2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,1,0,1,1,1,1,1,1,1,1,1,1,1,0,2},
   {2,1,0,0,0,0,0,0,0,3,0,0,0,0,0,2},
-  {2,6,0,0,0,0,1,1,1,1,0,0,0,0,3,2},
+  {2,0,0,0,0,0,1,1,1,1,0,0,0,0,3,2},
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2}
 };
 
@@ -94,14 +94,14 @@ void DrawMenu(void) {
   ST7735_SetTextColor(0xFFFF); // White
 
   // Draw buttons
-  ST7735_SetCursor(6, 4);
+  ST7735_SetCursor(6, 12);
   ST7735_OutString((char *)(currentSelection == MENU_PLAY ? "> Play" : "  Play"));
 
-  ST7735_SetCursor(1, 5);
+  ST7735_SetCursor(1, 13);
   ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Language: " : "  Language: "));
   ST7735_OutString((char *)(language == 0 ? "English" : "Espa\xA4ol"));
 
-  ST7735_SetCursor(6, 6);
+  ST7735_SetCursor(6, 14);
   ST7735_OutString((char *)(currentSelection == MENU_RULES ? "> Rules" : "  Rules"));
 }
 

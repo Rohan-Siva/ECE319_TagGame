@@ -118,10 +118,10 @@ int main1(void){ // main1
     }
   }
 }
-Player player1(1, 1, true);  // Chaser
-Player player2(14, 18, false); // Runner
+Player player1(2, 14, true);  // Chaser
+Player player2(18, 1, false); // Runner
 
-int main(void){ // testing the game
+int mainmenu(void){ // testing the menu
   __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
@@ -175,6 +175,34 @@ int main(void){ // testing the game
   DrawScores();
 
   while(1){
+  }
+}
+
+int main(void){
+   __disable_irq();
+  PLL_Init(); // set bus speed
+  LaunchPad_Init();
+  ST7735_InitPrintf();
+  Switch_Init();
+
+  DrawMap();
+  player1.draw();
+  player2.draw();
+  while(1){
+    if(Switch_MenuDownPressed()){
+      player1.erase();
+      player1.move(0, -1);
+      player1.draw();
+      Clock_Delay1ms(200);
+
+    }
+    if(Switch_MenuSelectPressed()){
+      player1.erase();
+      player1.move(0, 1);
+      player1.draw();
+      Clock_Delay1ms(200);
+
+    }
   }
 }
 // use main2 to observe graphics

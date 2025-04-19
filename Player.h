@@ -22,6 +22,8 @@ public:
   uint8_t getX() const;
   uint8_t getY() const;
   uint8_t getScore() const;
+  void draw() const;
+  void erase() const;
   PowerupType getPowerup() const;
   bool isChaser() const;
 
