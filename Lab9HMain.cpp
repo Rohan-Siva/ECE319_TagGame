@@ -118,8 +118,8 @@ int main1(void){ // main1
     }
   }
 }
-Player player1(2, 14, true);  // Chaser
-Player player2(18, 1, false); // Runner
+Player player1(1,18, false);  // Runner
+Player player2(14, 2, true); // Chaser
 
 int mainmenu(void){ // testing the menu
   __disable_irq();
@@ -201,7 +201,20 @@ int main(void){
       player1.move(0, 1);
       player1.draw();
       Clock_Delay1ms(200);
+    }
 
+    if(Switch_P1B1()){
+      player1.erase();
+      player1.move(-1, 0);
+      player1.draw();
+      Clock_Delay1ms(200);
+
+    }
+    if(Switch_P1B2()){
+      player1.erase();
+      player1.move(1, 0);
+      player1.draw();
+      Clock_Delay1ms(200);
     }
   }
 }

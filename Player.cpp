@@ -22,8 +22,10 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser) {
 
 
 void Player::move(int8_t dx, int8_t dy) {
-  x += dx;
-  y += dy;
+  if(map[x+dx][y+dy]!=1){
+    x += dx;
+    y += dy;
+  }
 }
 
 void Player::addScore(uint8_t points) {
