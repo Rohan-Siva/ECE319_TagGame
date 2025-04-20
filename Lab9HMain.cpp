@@ -118,7 +118,7 @@ int main1(void){ // main1
     }
   }
 }
-Player player1(1,18, false);  // Runner
+Player player1(2,17, false);  // Runner
 Player player2(14, 2, true); // Chaser
 
 int mainmenu(void){ // testing the menu
@@ -188,6 +188,16 @@ int main(void){
   DrawMap();
   player1.draw();
   player2.draw();
+
+      ST7735_SetCursor(0, 15);
+      //ST7735_SetRotation(1);
+      ST7735_OutString((char*)"P1:");
+      ST7735_SetCursor(3, 15);
+      ST7735_OutString((char*)"0");
+      ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
+      //ST7735_SetRotation(1);
+      ST7735_OutString((char*)"P2:");
+
   while(1){
     if(Switch_MenuDownPressed()){
       player1.erase();
@@ -216,6 +226,7 @@ int main(void){
       player1.draw();
       Clock_Delay1ms(200);
     }
+
   }
 }
 // use main2 to observe graphics

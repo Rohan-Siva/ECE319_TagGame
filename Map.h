@@ -14,7 +14,6 @@ enum MenuSelection { MENU_PLAY, MENU_LANGUAGE, MENU_RULES };
 extern uint8_t currentSelection;
 extern uint8_t language;
 #define MENU_COUNT 3
-
 #define RULES_PAGE_COUNT 3
 extern uint8_t currentRulesPage;
 

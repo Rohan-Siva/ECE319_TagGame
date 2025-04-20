@@ -22,7 +22,7 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser) {
 
 
 void Player::move(int8_t dx, int8_t dy) {
-  if(map[x+dx][y+dy]!=1){
+  if(map[y+dy][x+dx]!=1 && map[y+dy][x+dx]!=2){
     x += dx;
     y += dy;
   }
