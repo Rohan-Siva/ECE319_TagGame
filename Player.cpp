@@ -12,14 +12,18 @@ extern const uint16_t SpeedSprite[64];
 extern const uint16_t Black[64];
 extern uint8_t map[GRID_HEIGHT][GRID_WIDTH];
 
-Player::Player(uint8_t startX, uint8_t startY, bool isChaser) {
+Player::Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id) {
   x = startX;
   y = startY;
   score = 0;
   powerup = PowerupType::None;
   chaser = isChaser;
+  playerID = id;
 }
 
+uint8_t Player::getID() const {
+  return playerID;
+}
 
 void Player::move(int8_t dx, int8_t dy) {
   if(map[y+dy][x+dx]!=1 && map[y+dy][x+dx]!=2){

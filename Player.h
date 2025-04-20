@@ -12,7 +12,7 @@ enum class PowerupType {
 
 class Player {
 public:
-  Player(uint8_t startX, uint8_t startY, bool isChaser);
+  Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id);
 
   void move(int8_t dx, int8_t dy);
   void addScore(uint8_t points);
@@ -22,6 +22,7 @@ public:
   uint8_t getX() const;
   uint8_t getY() const;
   uint8_t getScore() const;
+  uint8_t getID() const;
   void draw() const;
   void erase() const;
   PowerupType getPowerup() const;
@@ -30,6 +31,7 @@ public:
 private:
   uint8_t x, y;
   uint8_t score;
+  uint8_t playerID;
   PowerupType powerup;
   bool chaser;
 };

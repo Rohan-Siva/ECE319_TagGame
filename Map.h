@@ -25,6 +25,7 @@ void SelectMenuItem(void);
 void DrawRules(void);
 void NextRulesPage(void);
 void DrawScores(void);
+void DrawScoreBoard(void);
 void DrawPowerUp(PowerupType powerup, bool isP1);
 
 #endif // __MAP_H__

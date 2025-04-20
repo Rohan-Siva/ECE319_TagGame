@@ -227,4 +227,31 @@ void DrawPowerUp(PowerupType powerup, bool isP1){
     ST7735_DrawBitmap(x, y, GhostSprite, TILE_SIZE, TILE_SIZE);
     return;
   }
+  if(powerup==PowerupType::None){
+    ST7735_DrawBitmap(x, y, Black, TILE_SIZE, TILE_SIZE);
+
+  }
+}
+
+void DrawScoreBoard(void){
+  int y = 160 - TILE_SIZE+4;
+  int x = 2*TILE_SIZE+4;
+
+  ST7735_SetCursor(0, 15);
+  ST7735_OutString((char*)"P1:");
+  ST7735_DrawBitmap(x, y, CoinSprite, TILE_SIZE, TILE_SIZE);
+  ST7735_SetCursor(5, 15);
+  ST7735_OutString((char*)"0");
+
+  DrawPowerUp(PowerupType::Ghost, false);
+  ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
+  ST7735_OutUDec(0);
+  x = 10*TILE_SIZE;
+  ST7735_DrawBitmap(x, y, CoinSprite, TILE_SIZE, TILE_SIZE);
+  ST7735_SetCursor(15, 15);
+  ST7735_OutUDec(0);
+}
+
+void UpdateCoin(Player p){
+  
 }

@@ -118,8 +118,8 @@ int main1(void){ // main1
     }
   }
 }
-Player player1(2,17, false);  // Runner
-Player player2(14, 2, true); // Chaser
+Player player1(2,17, false,1);  // Runner
+Player player2(14, 2, true,2); // Chaser
 
 int mainmenu(void){ // testing the menu
   __disable_irq();
@@ -189,15 +189,7 @@ int main(void){
   player1.draw();
   player2.draw();
 
-      ST7735_SetCursor(0, 15);
-      //ST7735_SetRotation(1);
-      ST7735_OutString((char*)"P1:");
-      ST7735_SetCursor(3, 15);
-      ST7735_OutString((char*)"0");
-      DrawPowerUp(PowerupType::Ghost, true);
-      ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
-      //ST7735_SetRotation(1);
-      ST7735_OutString((char*)"P2:");
+  DrawScoreBoard();
 
   while(1){
     if(Switch_MenuDownPressed()){
