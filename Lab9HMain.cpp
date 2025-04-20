@@ -22,6 +22,8 @@
 #include "Map.h"
 #include "Player.h"
 #include "Switch.h"
+#include "Game_ADC.h"
+#include "JoyStick.h"
 extern "C" void __disable_irq(void);
 extern "C" void __enable_irq(void);
 extern "C" void TIMG12_IRQHandler(void);
@@ -178,7 +180,25 @@ int mainmenu(void){ // testing the menu
   }
 }
 
-int main(void){
+int main(void){ // testjoystick
+  Joystick_Init();
+  __disable_irq();
+  PLL_Init(); // set bus speed
+  LaunchPad_Init();
+  ST7735_InitPrintf();
+
+  while(1){
+    int x1 = Joystick1_ReadX(); // x is up, up max is 4090 ish
+    int y1 = Joystick1_ReadY(); // y left all the way is 4090 ish
+
+    int x2 = Joystick1_ReadX(); // x is down, down max is 0 ish
+    int y2 = Joystick1_ReadY(); // y is right, right max is 0-10 ish
+  }
+
+
+}
+
+int main11(void){
    __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();

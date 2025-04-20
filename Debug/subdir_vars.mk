@@ -6,6 +6,8 @@
 CPP_SRCS += \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/Clock.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/DAC5.cpp \
+../Game_ADC.cpp \
+../JoyStick.cpp \
 ../LED.cpp \
 ../Lab9HMain.cpp \
 /Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/LaunchPad.cpp \
@@ -26,6 +28,8 @@ CMD_SRCS += \
 OBJS += \
 ./Clock.o \
 ./DAC5.o \
+./Game_ADC.o \
+./JoyStick.o \
 ./LED.o \
 ./Lab9HMain.o \
 ./LaunchPad.o \
@@ -43,6 +47,8 @@ OBJS += \
 CPP_DEPS += \
 ./Clock.d \
 ./DAC5.d \
+./Game_ADC.d \
+./JoyStick.d \
 ./LED.d \
 ./Lab9HMain.d \
 ./LaunchPad.d \
@@ -60,6 +66,8 @@ CPP_DEPS += \
 OBJS__QUOTED += \
 "Clock.o" \
 "DAC5.o" \
+"Game_ADC.o" \
+"JoyStick.o" \
 "LED.o" \
 "Lab9HMain.o" \
 "LaunchPad.o" \
@@ -77,6 +85,8 @@ OBJS__QUOTED += \
 CPP_DEPS__QUOTED += \
 "Clock.d" \
 "DAC5.d" \
+"Game_ADC.d" \
+"JoyStick.d" \
 "LED.d" \
 "Lab9HMain.d" \
 "LaunchPad.d" \
@@ -94,6 +104,8 @@ CPP_DEPS__QUOTED += \
 CPP_SRCS__QUOTED += \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/Clock.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/DAC5.cpp" \
+"../Game_ADC.cpp" \
+"../JoyStick.cpp" \
 "../LED.cpp" \
 "../Lab9HMain.cpp" \
 "/Users/rohansiva/Documents/MSPM0_ValvanoWare/inc/LaunchPad.cpp" \
