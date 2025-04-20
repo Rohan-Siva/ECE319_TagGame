@@ -38,6 +38,8 @@ private:
   PowerupType powerup;
   bool chaser;
   uint8_t coins;
+  bool hasSpeed;
+  bool hasGhost;
 };
 
 #endif

@@ -197,6 +197,11 @@ int main(void){
       Clock_Delay1ms(200);
       continue;
     }
+    if(tempuse()){
+      player1.usePowerup();
+      Clock_Delay1ms(200);
+      continue;
+    }
     if(Switch_MenuDownPressed()){
       player1.erase();
       player1.move(0, -1);

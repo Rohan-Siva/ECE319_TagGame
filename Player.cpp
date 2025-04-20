@@ -20,6 +20,8 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id) {
   chaser = isChaser;
   playerID = id;
   coins = 0;
+  hasSpeed = false;
+  hasGhost = false;
 }
 
 uint8_t Player::getID() const {
@@ -31,11 +33,23 @@ uint8_t Player::getCoins() const {
 }
 
 void Player::move(int8_t dx, int8_t dy) {
-  if(map[y+dy][x+dx]!=1 && map[y+dy][x+dx]!=2){
+  if(hasGhost && map[y+dy][x+dx]!=2){
     x += dx;
     y += dy;
+    return;
   }
-}
+  if(map[y+dy][x+dx]!=1 && map[y+dy][x+dx]!=2){
+    if(hasSpeed && map[y+2*dy][x+2*dx]!=2 && map[y+2*dy][x+2*dx]!=1){
+      x+=2*dx;
+      y+=2*dy;
+      return;
+    }
+    x += dx;
+    y += dy;
+    return;
+  }
+  }
+
 
 void Player::collectItem(){
   if(map[y][x]==3){
@@ -51,16 +65,16 @@ void Player::collectItem(){
     return;
   }
 
-  if(map[x][y]==4){
+  if(map[y][x]==4){
     setPowerup(PowerupType::Speed);
   }
-  else if(map[x][y]==5){
+  else if(map[y][x]==5){
     setPowerup(PowerupType::Mine);
   }
-  else if(map[x][y]==6){
+  else if(map[y][x]==6){
     setPowerup(PowerupType::Ghost);
   }
-  map[x][y]=0;
+  map[y][x]=0;
   ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, Black, TILE_SIZE, TILE_SIZE);
   draw();
 }
@@ -70,6 +84,7 @@ void Player::addScore(uint8_t points) {
 }
 
 void Player::setPowerup(PowerupType p) {
+  DrawPowerUp(p, (playerID==1));
   powerup = p;
 }
 
@@ -77,10 +92,9 @@ void Player::usePowerup(){
   if(getPowerup()==PowerupType::None){
     return;
   }
-  map[x][y] = (int)getPowerup()+3;
   if(getPowerup()==PowerupType::Mine) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
-  if(getPowerup()==PowerupType::Speed) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, SpeedSprite, TILE_SIZE, TILE_SIZE);
-  if(getPowerup()==PowerupType::Ghost) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, GhostSprite, TILE_SIZE, TILE_SIZE);
+  if(getPowerup()==PowerupType::Speed) hasSpeed = true;
+  if(getPowerup()==PowerupType::Ghost) hasGhost = true;
   setPowerup(PowerupType::None);
 }
 

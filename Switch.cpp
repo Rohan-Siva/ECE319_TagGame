@@ -50,3 +50,7 @@ uint8_t Switch_P1B2(void) {
 uint8_t temppickup(void){
   return Switch_MenuDownPressed() && Switch_MenuSelectPressed();
 }
+
+uint8_t tempuse(void){
+  return Switch_P1B1() && Switch_P1B2();
+}

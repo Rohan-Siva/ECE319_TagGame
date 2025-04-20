@@ -24,5 +24,5 @@ uint8_t Switch_P1B1(void);
 uint8_t Switch_P1B2(void);    
 
 uint8_t temppickup(void);
-
+uint8_t tempuse(void);
 #endif /* SWITCH_H_ */
