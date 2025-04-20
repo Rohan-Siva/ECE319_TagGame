@@ -57,10 +57,10 @@ void DrawMap(void) {
           ST7735_DrawBitmap(x, y, SpeedSprite, TILE_SIZE, TILE_SIZE);
           break;
         case 5:
-          ST7735_DrawBitmap(x, y, ChaserSprite, TILE_SIZE, TILE_SIZE);
+          ST7735_DrawBitmap(x, y, MineSprite, TILE_SIZE, TILE_SIZE);
           break;
         case 6:
-          ST7735_DrawBitmap(x, y, RunnerSprite, TILE_SIZE, TILE_SIZE);
+          ST7735_DrawBitmap(x, y, GhostSprite, TILE_SIZE, TILE_SIZE);
           break;
 
         // case 0: skip drawing
@@ -241,17 +241,23 @@ void DrawScoreBoard(void){
   ST7735_OutString((char*)"P1:");
   ST7735_DrawBitmap(x, y, CoinSprite, TILE_SIZE, TILE_SIZE);
   ST7735_SetCursor(5, 15);
-  ST7735_OutString((char*)"0");
-
-  DrawPowerUp(PowerupType::Ghost, false);
-  ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
   ST7735_OutUDec(0);
+
+  ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
+  ST7735_OutString((char*)"P2:");
   x = 10*TILE_SIZE;
   ST7735_DrawBitmap(x, y, CoinSprite, TILE_SIZE, TILE_SIZE);
   ST7735_SetCursor(15, 15);
   ST7735_OutUDec(0);
 }
 
-void UpdateCoin(Player p){
-  
+void UpdateCoin(int id,int coins){
+  if(id==1){
+    ST7735_SetCursor(5, 15);
+    ST7735_OutUDec(coins);
+  }
+  if(id == 2){
+    ST7735_SetCursor(15, 15);
+    ST7735_OutUDec(coins);
+  }
 }

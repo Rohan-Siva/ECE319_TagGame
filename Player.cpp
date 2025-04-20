@@ -19,10 +19,15 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id) {
   powerup = PowerupType::None;
   chaser = isChaser;
   playerID = id;
+  coins = 0;
 }
 
 uint8_t Player::getID() const {
   return playerID;
+}
+
+uint8_t Player::getCoins() const {
+  return coins;
 }
 
 void Player::move(int8_t dx, int8_t dy) {
@@ -30,6 +35,34 @@ void Player::move(int8_t dx, int8_t dy) {
     x += dx;
     y += dy;
   }
+}
+
+void Player::collectItem(){
+  if(map[y][x]==3){
+    coins+=1;
+    map[y][x]=0;
+    UpdateCoin(playerID,coins);
+    ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, Black, TILE_SIZE, TILE_SIZE);
+    draw();
+    return;
+  }
+  if(getPowerup()!=PowerupType::None){
+    //play error sound
+    return;
+  }
+
+  if(map[x][y]==4){
+    setPowerup(PowerupType::Speed);
+  }
+  else if(map[x][y]==5){
+    setPowerup(PowerupType::Mine);
+  }
+  else if(map[x][y]==6){
+    setPowerup(PowerupType::Ghost);
+  }
+  map[x][y]=0;
+  ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, Black, TILE_SIZE, TILE_SIZE);
+  draw();
 }
 
 void Player::addScore(uint8_t points) {
@@ -40,9 +73,21 @@ void Player::setPowerup(PowerupType p) {
   powerup = p;
 }
 
+void Player::usePowerup(){
+  if(getPowerup()==PowerupType::None){
+    return;
+  }
+  map[x][y] = (int)getPowerup()+3;
+  if(getPowerup()==PowerupType::Mine) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
+  if(getPowerup()==PowerupType::Speed) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, SpeedSprite, TILE_SIZE, TILE_SIZE);
+  if(getPowerup()==PowerupType::Ghost) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, GhostSprite, TILE_SIZE, TILE_SIZE);
+  setPowerup(PowerupType::None);
+}
+
 void Player::reset() {
-  score = 0;
+  coins = 0;
   powerup = PowerupType::None;
+  chaser = !chaser;
 }
 
 uint8_t Player::getX() const { 
@@ -60,7 +105,6 @@ PowerupType Player::getPowerup() const
 }
 bool Player::isChaser() const { 
     return chaser; 
-
 }
 
 
@@ -91,6 +135,12 @@ void Player::erase() const {
       break;
     case 4:
       ST7735_DrawBitmap(screenX, screenY, SpeedSprite, TILE_SIZE, TILE_SIZE);
+      break;
+    case 5:
+      ST7735_DrawBitmap(screenX, screenY, MineSprite, TILE_SIZE, TILE_SIZE);
+      break;
+    case 6:
+      ST7735_DrawBitmap(screenX, screenY, GhostSprite, TILE_SIZE, TILE_SIZE);
       break;
     default:
       ST7735_DrawBitmap(screenX, screenY, Black, TILE_SIZE, TILE_SIZE);

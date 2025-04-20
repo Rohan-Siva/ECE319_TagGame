@@ -27,5 +27,6 @@ void NextRulesPage(void);
 void DrawScores(void);
 void DrawScoreBoard(void);
 void DrawPowerUp(PowerupType powerup, bool isP1);
+void UpdateCoin(int id, int coins);
 
 #endif // __MAP_H__

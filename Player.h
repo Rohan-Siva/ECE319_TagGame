@@ -17,7 +17,9 @@ public:
   void move(int8_t dx, int8_t dy);
   void addScore(uint8_t points);
   void setPowerup(PowerupType p);
+  void collectItem();
   void reset();
+  void usePowerup();
 
   uint8_t getX() const;
   uint8_t getY() const;
@@ -27,6 +29,7 @@ public:
   void erase() const;
   PowerupType getPowerup() const;
   bool isChaser() const;
+  uint8_t getCoins() const;
 
 private:
   uint8_t x, y;
@@ -34,6 +37,7 @@ private:
   uint8_t playerID;
   PowerupType powerup;
   bool chaser;
+  uint8_t coins;
 };
 
 #endif

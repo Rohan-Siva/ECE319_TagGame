@@ -23,4 +23,6 @@ uint8_t Switch_MenuSelectPressed(void);   // PA26
 uint8_t Switch_P1B1(void);  
 uint8_t Switch_P1B2(void);    
 
+uint8_t temppickup(void);
+
 #endif /* SWITCH_H_ */

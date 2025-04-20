@@ -46,3 +46,7 @@ uint8_t Switch_P1B2(void) {
   uint32_t checkval = Switch_In();
   return ((checkval & (1 << 0)) != 0); // Bit 3 corresponds to PA28 (mapped to bit 0 after shift)
 }
+
+uint8_t temppickup(void){
+  return Switch_MenuDownPressed() && Switch_MenuSelectPressed();
+}

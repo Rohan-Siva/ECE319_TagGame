@@ -192,6 +192,11 @@ int main(void){
   DrawScoreBoard();
 
   while(1){
+    if(temppickup()){
+      player1.collectItem();
+      Clock_Delay1ms(200);
+      continue;
+    }
     if(Switch_MenuDownPressed()){
       player1.erase();
       player1.move(0, -1);
