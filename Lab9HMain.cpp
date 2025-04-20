@@ -194,6 +194,7 @@ int main(void){
       ST7735_OutString((char*)"P1:");
       ST7735_SetCursor(3, 15);
       ST7735_OutString((char*)"0");
+      DrawPowerUp(PowerupType::Ghost, true);
       ST7735_SetCursor(10, 15); // 15 represents how far right it is on the screen from joystick view
       //ST7735_SetRotation(1);
       ST7735_OutString((char*)"P2:");

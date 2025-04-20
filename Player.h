@@ -6,8 +6,8 @@
 enum class PowerupType {
   None,
   Speed,
-  Missile,
-  Mine
+  Mine,
+  Ghost
 };
 
 class Player {

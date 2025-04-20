@@ -207,3 +207,24 @@ void DrawScores(void){
   ST7735_OutString((char*)"P2:");
   ST7735_OutUDec(player2.getScore());
 }
+
+void DrawPowerUp(PowerupType powerup, bool isP1){
+  int y = 160 - TILE_SIZE+4;
+  int offset = 0;
+  if(!isP1){
+    offset+=8*TILE_SIZE;
+  }
+  int x = 6*TILE_SIZE+offset;
+  if (powerup == PowerupType::Speed) {
+    ST7735_DrawBitmap(x, y, SpeedSprite, TILE_SIZE, TILE_SIZE);
+    return;
+  }
+  if(powerup == PowerupType::Mine){
+    ST7735_DrawBitmap(x, y, MineSprite, TILE_SIZE, TILE_SIZE);
+    return;
+  }
+  if(powerup==PowerupType::Ghost){
+    ST7735_DrawBitmap(x, y, GhostSprite, TILE_SIZE, TILE_SIZE);
+    return;
+  }
+}

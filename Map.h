@@ -1,6 +1,7 @@
 #ifndef __MAP_H__
 #define __MAP_H__
 
+#include "Player.h"
 #include <stdint.h>
 
 #define TILE_SIZE 8
@@ -24,5 +25,6 @@ void SelectMenuItem(void);
 void DrawRules(void);
 void NextRulesPage(void);
 void DrawScores(void);
+void DrawPowerUp(PowerupType powerup, bool isP1);
 
 #endif // __MAP_H__
