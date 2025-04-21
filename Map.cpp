@@ -2,6 +2,10 @@
 #include "../inc/ST7735.h"
 #include "Player.h"
 #include "images/images.h"
+
+#include <cstdlib>   // for rand()
+#include <ctime> 
+
 extern Player player1;
 extern Player player2;
 
@@ -12,25 +16,26 @@ extern Player player2;
 uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
   {2,0,0,1,0,0,2,0,1,0,0,0,0,1,0,2},
-  {2,0,4,1,0,0,0,0,1,0,0,0,0,4,0,2},
-  {2,0,0,1,0,5,0,0,1,0,0,0,0,0,0,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
   {2,0,0,1,1,0,0,0,1,0,1,0,0,0,0,2},
-  {2,0,6,0,0,0,0,0,0,0,0,0,0,0,1,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2},
   {2,0,1,0,0,1,0,0,1,0,1,0,0,0,1,2},
-  {2,0,0,0,4,0,0,1,0,0,0,0,0,0,0,2},
+  {2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,2},
   {2,0,0,1,1,0,0,1,0,0,1,0,1,0,0,2},
-  {2,0,0,0,0,0,4,0,1,0,0,3,0,1,0,2},
+  {2,0,0,0,0,0,0,0,1,0,0,0,0,1,0,2},
   {2,0,0,1,0,0,1,0,1,0,1,0,0,1,0,2},
-  {2,0,0,0,6,0,0,0,0,0,0,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,0,0,1,1,0,0,0,0,0,0,0,1,1,0,2},
-  {2,0,0,0,0,0,4,0,3,0,0,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,1,1,1,0,0,1,0,1,0,0,0,1,1,1,2},
-  {2,0,0,0,4,0,0,0,0,0,0,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,0,1,1,0,0,0,0,0,0,1,0,0,0,0,2},
-  {2,0,0,0,0,0,0,0,0,3,0,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
 };
+
 
 // theres an extra layer that doesnt show up down here
 
@@ -39,6 +44,8 @@ uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
 
 void DrawMap(void) {
   ST7735_FillScreen(0x0000);
+  placeRandomCoins(map, 7);
+  placePowerups(map);
   for (int row = 0; row < GRID_HEIGHT; row++) {
     for (int col = 0; col < GRID_WIDTH; col++) {
       int x = col * TILE_SIZE;
@@ -260,4 +267,47 @@ void UpdateCoin(int id,int coins){
     ST7735_SetCursor(15, 15);
     ST7735_OutUDec(coins);
   }
+}
+
+void placeRandomCoins(uint8_t map[GRID_HEIGHT][GRID_WIDTH], int coinCount) {
+    srand(time(0));  // Seed the RNG with current time
+    
+    int placed = 0;
+    while (placed < coinCount) {
+        int row = rand() % (GRID_HEIGHT - 1); // exclude last row
+        int col = rand() % GRID_WIDTH;
+
+        if (map[row][col] == 0) {
+            map[row][col] = 3;  // Place coin
+            placed++;
+        }
+    }
+}
+
+void placePowerups(uint8_t map[GRID_HEIGHT][GRID_WIDTH]) {
+    srand(time(0)); // optional if already seeded elsewhere
+
+    struct PlacePowerup {
+        uint8_t value;
+        int count;
+    };
+
+    PlacePowerup powerups[] = {
+        {4, 3}, // Speed
+        {5, 3}, // Mine
+        {6, 2}  // Ghost
+    };
+
+    for (const PlacePowerup& p : powerups) {
+        int placed = 0;
+        while (placed < p.count) {
+            int row = rand() % (GRID_HEIGHT - 1); // exclude last row
+            int col = rand() % GRID_WIDTH;
+
+            if (map[row][col] == 0) {
+                map[row][col] = p.value;
+                placed++;
+            }
+        }
+    }
 }

@@ -28,5 +28,7 @@ void DrawScores(void);
 void DrawScoreBoard(void);
 void DrawPowerUp(PowerupType powerup, bool isP1);
 void UpdateCoin(int id, int coins);
+void placePowerups(uint8_t map[GRID_HEIGHT][GRID_WIDTH]);
+void placeRandomCoins(uint8_t map[GRID_HEIGHT][GRID_WIDTH], int coinCount);
 
 #endif // __MAP_H__

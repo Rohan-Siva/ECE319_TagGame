@@ -206,6 +206,8 @@ __disable_irq();
   ST7735_InitPrintf();
   Switch_Init();
   Joystick_Init();
+  Sound_Init();
+  __enable_irq();
 
   DrawMap();
   player1.draw();

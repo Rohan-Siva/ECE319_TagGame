@@ -19,7 +19,7 @@ static uint32_t SoundLength;
 
 // SysTick period for 11kHz
 #define SYSTICK_FREQ 11000
-#define SYSTICK_PERIOD (120000000 / SYSTICK_FREQ) // Assuming 120MHz clock
+#define SYSTICK_PERIOD (80000000 / SYSTICK_FREQ) // Assuming 80MHz clock
 
 const uint8_t collect[16] = {
   16, 20, 24, 28, 31, 28, 24, 20,
