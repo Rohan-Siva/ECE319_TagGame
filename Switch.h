@@ -17,12 +17,11 @@ void Switch_Init(void);
 uint32_t Switch_In(void);
 
 // Check if specific menu switches are pressed (active-low)
-uint8_t Switch_MenuDownPressed(void);     // PA25
-uint8_t Switch_MenuSelectPressed(void);   // PA26
-
 uint8_t Switch_P1B1(void);  
-uint8_t Switch_P1B2(void);    
+uint8_t Switch_P1B2(void);  
 
-uint8_t temppickup(void);
-uint8_t tempuse(void);
+uint8_t Switch_P2B1(void);  
+uint8_t Switch_P2B2(void);    
+
+
 #endif /* SWITCH_H_ */

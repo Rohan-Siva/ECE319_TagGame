@@ -2,6 +2,7 @@
 #include <ti/devices/msp/msp.h>
 #include "../inc/Clock.h"
 #include "Game_ADC.h"
+#include "Joystick.h"
 
 // ADC channel macros for clarity
 #define JOY1_X_CHANNEL 1  // PA16, ADC1.1
@@ -11,6 +12,10 @@
 
 #define JOY1_BUTTON_PIN 12 // PB12
 #define JOY2_BUTTON_PIN 11 // PA11
+
+
+#define DEADZONE_LOW   2000
+#define DEADZONE_HIGH  3300
 
 void Joystick_Init(void) {
     // Initialize ADC1 once using one of the channels as a baseline.
@@ -46,11 +51,11 @@ void Joystick_Init(void) {
 
 
 uint16_t Joystick1_ReadX(void) { // Right joystick
-    return MyADC1_In(0);
+    return MyADC1_In(2);
 }
 
 uint16_t Joystick1_ReadY(void) {
-    return MyADC1_In(1);
+    return MyADC1_In(3);
 }
 
 bool Joystick1_ButtonPressed(void) {
@@ -60,11 +65,11 @@ bool Joystick1_ButtonPressed(void) {
 }
 
 uint16_t Joystick2_ReadX(void) { // Left joystick
-    return MyADC1_In(2);
+    return MyADC1_In(0);
 }
 
 uint16_t Joystick2_ReadY(void) {
-    return MyADC1_In(3);
+    return MyADC1_In(1);
 }
 
 bool Joystick2_ButtonPressed(void) {
@@ -72,4 +77,21 @@ bool Joystick2_ButtonPressed(void) {
     if (val == 1) return true;
     else return false;
 
+}
+
+JoystickDirection GetDiscreteJoystickDirection(uint32_t adcX, uint32_t adcY) {
+    JoystickDirection dir = {0, 0};
+
+    // Prioritize vertical movement over horizontal
+    if (adcY > DEADZONE_HIGH) {
+        dir.dy = -1;  // up
+    } else if (adcY < DEADZONE_LOW) {
+        dir.dy = 1; // down
+    } else if (adcX > DEADZONE_HIGH) {
+        dir.dx = 1;  // right
+    } else if (adcX < DEADZONE_LOW) {
+        dir.dx = -1; // left
+    }
+
+    return dir;
 }

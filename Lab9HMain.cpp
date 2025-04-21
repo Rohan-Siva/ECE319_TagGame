@@ -14,6 +14,7 @@
 #include "../inc/Timer.h"
 #include "../inc/SlidePot.h"
 #include "../inc/DAC5.h"
+#include "Joystick.h"
 #include "SmallFont.h"
 #include "LED.h"
 #include "Switch.h"
@@ -134,32 +135,32 @@ int mainmenu(void){ // testing the menu
   //DrawMap();
   DrawMenu();
   while (1) {
-    bool godown = Switch_MenuDownPressed();
-    bool selected = Switch_MenuSelectPressed();
+    // bool godown = Switch_MenuDownPressed();
+    // bool selected = Switch_MenuSelectPressed();
 
-    if (selected) { // select button pressed
-      SelectMenuItem();
-      Clock_Delay1ms(500);
+    // if (selected) { // select button pressed
+    //   SelectMenuItem();
+    //   Clock_Delay1ms(500);
 
-      // If in rules, wait for another press to advance page
-      if (currentSelection == MENU_RULES) {
-        while (1) {
-          bool nextpage = Switch_MenuSelectPressed();
-          if (nextpage) {
-            NextRulesPage();
-            Clock_Delay1ms(300);
-          }
-          if(currentRulesPage==0){
-            break;
-          }
-        }
-      }
-    }
-    else if(godown){
-      NavigateMenu(1);
-      Clock_Delay1ms(200);
+    //   // If in rules, wait for another press to advance page
+    //   if (currentSelection == MENU_RULES) {
+    //     while (1) {
+    //       bool nextpage = Switch_MenuSelectPressed();
+    //       if (nextpage) {
+    //         NextRulesPage();
+    //         Clock_Delay1ms(300);
+    //       }
+    //       if(currentRulesPage==0){
+    //         break;
+    //       }
+    //     }
+    //   }
+    // }
+    // else if(godown){
+    //   NavigateMenu(1);
+    //   Clock_Delay1ms(200);
 
-    }
+    // }
 
   }
   DrawMap();
@@ -180,7 +181,7 @@ int mainmenu(void){ // testing the menu
   }
 }
 
-int main(void){ // testjoystick
+int main22(void){ // testjoystick
   Joystick_Init();
   __disable_irq();
   PLL_Init(); // set bus speed
@@ -198,7 +199,59 @@ int main(void){ // testjoystick
 
 }
 
-int main11(void){
+int main(void) {
+__disable_irq();
+  PLL_Init(); // set bus speed
+  LaunchPad_Init();
+  ST7735_InitPrintf();
+  Switch_Init();
+  Joystick_Init();
+
+  DrawMap();
+  player1.draw();
+  player2.draw();
+  player1.setPowerup(PowerupType::Ghost);
+  player2.setPowerup(PowerupType::Ghost);
+  DrawScoreBoard();
+
+  while(1){
+    JoystickDirection dir1 = GetDiscreteJoystickDirection(Joystick1_ReadY(), Joystick1_ReadX());
+    JoystickDirection dir2 = GetDiscreteJoystickDirection(Joystick2_ReadX(), Joystick2_ReadY());
+
+    if(dir1.dx || dir1.dy) {
+      player1.erase();
+      player1.move(dir1.dx, dir1.dy);
+      player1.draw();
+    }
+
+    if(dir2.dx || dir2.dy) {
+      player2.erase();
+      player2.move(dir2.dx, dir2.dy);
+      player2.draw();
+      
+    }
+
+    if(Switch_P1B1()){
+      player1.collectItem();
+    }
+
+    if(Switch_P1B2()){
+      player1.usePowerup();
+    }
+
+    if(Switch_P2B1()){
+      player2.collectItem();
+    }
+
+    if(Switch_P2B2()){
+      player2.usePowerup();
+    }
+
+    Clock_Delay1ms(200);
+  }
+}
+
+int main23(void){ // my switch movement
    __disable_irq();
   PLL_Init(); // set bus speed
   LaunchPad_Init();
@@ -212,29 +265,29 @@ int main11(void){
   DrawScoreBoard();
 
   while(1){
-    if(temppickup()){
-      player1.collectItem();
-      Clock_Delay1ms(200);
-      continue;
-    }
-    if(tempuse()){
-      player1.usePowerup();
-      Clock_Delay1ms(200);
-      continue;
-    }
-    if(Switch_MenuDownPressed()){
-      player1.erase();
-      player1.move(0, -1);
-      player1.draw();
-      Clock_Delay1ms(200);
+    // if(temppickup()){
+    //   player1.collectItem();
+    //   Clock_Delay1ms(200);
+    //   continue;
+    // }
+    // if(tempuse()){
+    //   player1.usePowerup();
+    //   Clock_Delay1ms(200);
+    //   continue;
+    // }
+    // if(Switch_MenuDownPressed()){
+    //   player1.erase();
+    //   player1.move(0, -1);
+    //   player1.draw();
+    //   Clock_Delay1ms(200);
 
-    }
-    if(Switch_MenuSelectPressed()){
-      player1.erase();
-      player1.move(0, 1);
-      player1.draw();
-      Clock_Delay1ms(200);
-    }
+    // }
+    // if(Switch_MenuSelectPressed()){
+    //   player1.erase();
+    //   player1.move(0, 1);
+    //   player1.draw();
+    //   Clock_Delay1ms(200);
+    // }
 
     if(Switch_P1B1()){
       player1.erase();

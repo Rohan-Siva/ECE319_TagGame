@@ -33,8 +33,9 @@ Lab9HMain.o: ../Lab9HMain.cpp \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0g1x0x_g3x0x.h \
  ../../inc/ST7735.h ../../inc/Clock.h ../../inc/LaunchPad.h \
  ../../inc/TExaS.h ../../inc/Timer.h ../../inc/SlidePot.h \
- ../../inc/DAC5.h ../SmallFont.h ../LED.h ../Switch.h ../Sound.h \
- ../images/images.h ../Map.h ../Player.h ../Game_ADC.h ../JoyStick.h
+ ../../inc/DAC5.h ../Joystick.h ../SmallFont.h ../LED.h ../Switch.h \
+ ../Sound.h ../images/images.h ../Map.h ../Player.h ../Game_ADC.h \
+ ../JoyStick.h
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/msp.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/DeviceFamily.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/m0p/mspm0g350x.h:
@@ -72,6 +73,7 @@ Lab9HMain.o: ../Lab9HMain.cpp \
 ../../inc/Timer.h:
 ../../inc/SlidePot.h:
 ../../inc/DAC5.h:
+../Joystick.h:
 ../SmallFont.h:
 ../LED.h:
 ../Switch.h:

@@ -31,7 +31,7 @@ JoyStick.o: ../JoyStick.cpp ../../inc/LaunchPad.h \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/peripherals/m0p/hw_debugss.h \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/peripherals/m0p/hw_sysctl.h \
  /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0g1x0x_g3x0x.h \
- ../../inc/Clock.h ../Game_ADC.h
+ ../../inc/Clock.h ../Game_ADC.h ../Joystick.h
 ../../inc/LaunchPad.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/msp.h:
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/DeviceFamily.h:
@@ -65,3 +65,4 @@ JoyStick.o: ../JoyStick.cpp ../../inc/LaunchPad.h \
 /Applications/ti/mspm0_sdk_2_03_00_07/source/ti/devices/msp/peripherals/m0p/sysctl/hw_sysctl_mspm0g1x0x_g3x0x.h:
 ../../inc/Clock.h:
 ../Game_ADC.h:
+../Joystick.h:
