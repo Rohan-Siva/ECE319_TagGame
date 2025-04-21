@@ -1,6 +1,7 @@
 #include "Map.h"
 #include "../inc/ST7735.h"
 #include "Player.h"
+#include "Sound.h"
 #include "images/images.h"
 
 extern const uint16_t RunnerSprite[64];
@@ -58,6 +59,7 @@ void Player::collectItem(){
     UpdateCoin(playerID,coins);
     ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, Black, TILE_SIZE, TILE_SIZE);
     draw();
+    Sound_Collect();
     return;
   }
   if(getPowerup()!=PowerupType::None){

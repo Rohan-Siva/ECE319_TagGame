@@ -210,8 +210,6 @@ __disable_irq();
   DrawMap();
   player1.draw();
   player2.draw();
-  player1.setPowerup(PowerupType::Ghost);
-  player2.setPowerup(PowerupType::Ghost);
   DrawScoreBoard();
 
   while(1){
@@ -388,10 +386,10 @@ int main4(void){ uint32_t last=0,now;
       Sound_Killed(); // call one of your sounds
     }
     if((last == 0)&&(now == 4)){
-      Sound_Explosion(); // call one of your sounds
+      //Sound_Explosion(); // call one of your sounds
     }
     if((last == 0)&&(now == 8)){
-      Sound_Fastinvader1(); // call one of your sounds
+      //Sound_Fastinvader1(); // call one of your sounds
     }
     // modify this to test all your sounds
   }

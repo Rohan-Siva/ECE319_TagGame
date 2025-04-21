@@ -1,39 +1,41 @@
 // Sound.h
 // Runs on MSPM0
-// Play sounds on 5-bit DAC.
-// Your name
-// 11/5/2023
+// Play sounds on 5-bit DAC
+// Author: Your Name
+// Date: 11/5/2023
+
 #ifndef SOUND_H
 #define SOUND_H
 #include <stdint.h>
 
-// initialize a 11kHz SysTick, however no sound should be started
-// initialize any global variables
-// Initialize the 5 bit DAC
-// This is called once
+// Initializes the 5-bit DAC and configures SysTick for 11kHz timing,
+// but does not start playing any sound.
 void Sound_Init(void);
 
-//******* Sound_Start ************
-// This function does not output to the DAC. 
-// Rather, it sets a pointer and counter, and then enables the SysTick interrupt.
-// It starts the sound, and the SysTick ISR does the output
-// feel free to change the parameters
-// Sound should play once and stop
-// Input: pt is a pointer to an array of DAC outputs
-//        count is the length of the array
-// Output: none
-// special cases: as you wish to implement
+// Starts playback of a sound sample via the SysTick interrupt.
+// This function sets the sound pointer and counter but does not directly output to DAC.
+// Sound plays once and stops automatically.
+// Inputs:
+//   pt: pointer to an array of 5-bit DAC output values
+//   count: number of samples in the array
 void Sound_Start(const uint8_t *pt, uint32_t count);
 
-// following 8 functions do not output to the DAC
-// they configure pointers/counters and initiate the sound by calling Sound_Start
+// Stops any currently playing sound by disabling SysTick.
+void Sound_Stop(void);
+
+// Helper functions that load specific sound assets
+// and call Sound_Start with appropriate array and size.
 void Sound_Shoot(void);
 void Sound_Killed(void);
-void Sound_Explosion(void);
-void Sound_Fastinvader1(void);
-void Sound_Fastinvader2(void);
-void Sound_Fastinvader3(void);
-void Sound_Fastinvader4(void);
-void Sound_Highpitch(void);
+void Sound_Collect(void);
+void Sound_GameOver(void);
 
-#endif
+// Internal DAC output function - writes 5-bit data to GPIO.
+// You may keep this in a separate DAC module if preferred.
+void DAC5_Out(uint32_t data);
+
+
+extern const uint8_t collect[16]; // Example short sound
+
+
+#endif // SOUND_H

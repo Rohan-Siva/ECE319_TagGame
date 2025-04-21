@@ -1,8 +1,3 @@
-// Sound.cpp
-// Runs on MSPM0
-// Sound assets in sounds/sounds.h
-// your name
-// your data 
 #include <stdint.h>
 #include <ti/devices/msp/msp.h>
 #include "Sound.h"
@@ -11,64 +6,81 @@
 #include "../inc/Timer.h"
 
 
+#define PB0INDEX  11
+#define PB1INDEX  12
+#define PB2INDEX  14
+#define PB3INDEX  15
+#define PB4INDEX  16
+
+// Global variables for sound playback
+static const uint8_t* SoundData;
+static uint32_t SoundIndex;
+static uint32_t SoundLength;
+
+// SysTick period for 11kHz
+#define SYSTICK_FREQ 11000
+#define SYSTICK_PERIOD (120000000 / SYSTICK_FREQ) // Assuming 120MHz clock
+
+const uint8_t collect[16] = {
+  16, 20, 24, 28, 31, 28, 24, 20,
+  16, 12,  8,  4,  0,  4,  8, 12
+};
+
 
 void SysTick_IntArm(uint32_t period, uint32_t priority){
-  // write this
+  SysTick->CTRL = 0;         // disable SysTick
+  SysTick->LOAD = period - 1;// reload value
+  SysTick->VAL = 0;          // any write to VAL clears current
+  SCB->SHP[1] = (SCB->SHP[1] & ~0xC0000000) | (priority << 30); // priority 0 to 3
+  SysTick->CTRL = 0x0007;    // enable with core clock and interrupts
 }
-// initialize a 11kHz SysTick, however no sound should be started
-// initialize any global variables
-// Initialize the 5 bit DAC
+
 void Sound_Init(void){
-// write this
- 
-}
-extern "C" void SysTick_Handler(void);
-void SysTick_Handler(void){ // called at 11 kHz
-  // output one value to DAC if a sound is active
-    // output one value to DAC if a sound is active
+  // Setup GPIO for DAC output
+  IOMUX->SECCFG.PINCM[PB0INDEX] = 0x00000081;
+  IOMUX->SECCFG.PINCM[PB1INDEX] = 0x00000081;
+  IOMUX->SECCFG.PINCM[PB2INDEX] = 0x00000081;
+  IOMUX->SECCFG.PINCM[PB3INDEX] = 0x00000081;
+  IOMUX->SECCFG.PINCM[PB4INDEX] = 0x00000081;
+  GPIOB->DOE31_0 |= 0x01F;
 
+  DAC5_Out(0); // initialize DAC output
+  SoundIndex = 0;
+  SoundLength = 0;
+  SoundData = 0;
+  SysTick->CTRL = 0; // disable SysTick initially
 }
 
-//******* Sound_Start ************
-// This function does not output to the DAC. 
-// Rather, it sets a pointer and counter, and then enables the SysTick interrupt.
-// It starts the sound, and the SysTick ISR does the output
-// feel free to change the parameters
-// Sound should play once and stop
-// Input: pt is a pointer to an array of DAC outputs
-//        count is the length of the array
-// Output: none
-// special cases: as you wish to implement
+extern "C" void SysTick_Handler(void){
+  if (SoundIndex < SoundLength) {
+    DAC5_Out(SoundData[SoundIndex++]);
+  } else {
+    Sound_Stop();
+  }
+}
+
 void Sound_Start(const uint8_t *pt, uint32_t count){
-// write this
-  
+  if (pt == 0 || count == 0) return;
+  SoundData = pt;
+  SoundLength = count;
+  SoundIndex = 0;
+
+  SysTick_IntArm(SYSTICK_PERIOD, 0); // priority 0
 }
 
 void Sound_Shoot(void){
-// write this
-  Sound_Start( shoot, 4080);
+  Sound_Start(collect, 4080);
 }
 void Sound_Killed(void){
-// write this
-
+  Sound_Start(collect, 3500); // Replace with actual length
 }
-void Sound_Explosion(void){
-// write this
-
+void Sound_Collect(void){
+  Sound_Start(collect, 16); // Replace with actual length
+}
+void Sound_GameOver(void){
+  Sound_Start(collect, 5000); // Replace with actual length
 }
 
-void Sound_Fastinvader1(void){
-
-}
-void Sound_Fastinvader2(void){
-
-}
-void Sound_Fastinvader3(void){
-
-}
-void Sound_Fastinvader4(void){
-
-}
-void Sound_Highpitch(void){
-
+void Sound_Stop(void){
+  SysTick->CTRL = 0; // disable SysTick
 }
