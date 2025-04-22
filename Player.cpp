@@ -3,6 +3,8 @@
 #include "Player.h"
 #include "Sound.h"
 #include "images/images.h"
+#include "../inc/Clock.h"
+
 
 extern const uint16_t RunnerSprite[64];
 extern const uint16_t ChaserSprite[64];
@@ -44,6 +46,12 @@ void Player::move(int8_t dx, int8_t dy) {
   if (!chaser && map[y][x] == 7) {
     freeze(45); // 1.5 seconds freeze
     Sound_Explosion();
+
+    ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
+    Clock_Delay1ms(100);
+    draw();
+
+
     map[y][x] = 0;
     return;
   }
@@ -68,7 +76,8 @@ void Player::move(int8_t dx, int8_t dy) {
 
 
 void Player::collectItem(){
-  if(map[y][x]==3 && !isChaser()){
+  if(map[y][x]==3){
+    if(isChaser()) return;
     coins+=1;
     map[y][x]=0;
     UpdateCoin(playerID,coins);
