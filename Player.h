@@ -22,6 +22,8 @@ public:
   void usePowerup();
   void tickPowerups();
 
+  bool isFrozen() const;
+  void freeze(uint8_t duration);
   void setPosition(uint8_t newX, uint8_t newY);
 
   uint8_t getX() const;
@@ -45,6 +47,8 @@ private:
   bool hasGhost;
   int speedTimer;
   int ghostTimer;
+  uint8_t freezeTicks;
+
 };
 
 #endif

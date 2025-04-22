@@ -25,6 +25,8 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id) {
   hasGhost = false;
   speedTimer = 0; 
   ghostTimer = 0;
+  freezeTicks = 0;
+
 
 }
 
@@ -37,6 +39,16 @@ uint8_t Player::getCoins() const {
 }
 
 void Player::move(int8_t dx, int8_t dy) {
+  if (isFrozen()) return;
+
+  if (!chaser && map[y][x] == 7) {
+    freeze(45); // 1.5 seconds freeze
+    Sound_Explosion();
+    map[y][x] = 0;
+    return;
+  }
+
+
   if(hasGhost && map[y+dy][x+dx]!=2){
     x += dx;
     y += dy;
@@ -97,7 +109,9 @@ void Player::usePowerup(){
   if(getPowerup()==PowerupType::None){
     return;
   }
-  if(getPowerup()==PowerupType::Mine && isChaser()) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
+  if(getPowerup()==PowerupType::Mine && isChaser()){
+    map[y][x] = 7; // hidden mine placed
+  } 
   if(getPowerup()==PowerupType::Speed) {
     hasSpeed = true;
     hasGhost = false;
@@ -148,6 +162,18 @@ void Player::tickPowerups() {
       hasGhost = false;
     }
   }
+  if (freezeTicks > 0) {
+    freezeTicks--;
+  }
+
+}
+
+bool Player::isFrozen() const {
+  return freezeTicks > 0;
+}
+
+void Player::freeze(uint8_t duration) {
+  freezeTicks = duration;
 }
 
 

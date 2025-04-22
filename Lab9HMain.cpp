@@ -195,7 +195,7 @@ int main(void) {
     player1.addScore(-player1.getScore());  // clear score
     player2.addScore(-player2.getScore());
     roundOver = false;
-    gameTicks = 900;
+    gameTicks = 1350;
 
     DrawMap();
     player1.draw();

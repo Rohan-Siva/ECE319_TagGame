@@ -29,6 +29,7 @@ void Sound_Shoot(void);
 void Sound_Killed(void);
 void Sound_Collect(void);
 void Sound_GameOver(void);
+void Sound_Explosion(void);
 
 // Internal DAC output function - writes 5-bit data to GPIO.
 // You may keep this in a separate DAC module if preferred.

@@ -29,7 +29,7 @@ extern "C" void TIMG12_IRQHandler(void);
 extern Player player1;
 extern Player player2;
 
-volatile int gameTicks = 900; // 30s * 30Hz
+volatile int gameTicks = 1350; // 30s * 30Hz
 volatile bool roundOver = false;
 volatile bool returnToMenu = false;
 
@@ -373,6 +373,7 @@ void EndRound() {
   ST7735_FillScreen(ST7735_BLACK);
   ST7735_SetTextColor(0xFFFF);
   ST7735_SetCursor(0, 0);
+
   ST7735_OutString((char*)"--- Round Over ---");
 
   // Draw scores
@@ -384,29 +385,7 @@ void EndRound() {
   ST7735_OutString((char*)"P2 Score: ");
   ST7735_OutUDec(player2.getScore());
 
-  // Show upcoming roles
-  ST7735_SetCursor(0, 5);
-  ST7735_OutString((char*)"Next Round Roles:");
 
-  ST7735_SetCursor(0, 7);
-  ST7735_OutString((char*)"Runner: ");
-  if (!player1.isChaser()) {
-    ST7735_OutString((char*)"P1");
-    ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
-  } else {
-    ST7735_OutString((char*)"P2");
-    ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
-  }
-
-  ST7735_SetCursor(0, 9);
-  ST7735_OutString((char*)"Chaser: ");
-  if (player1.isChaser()) {
-    ST7735_OutString((char*)"P1");
-    ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
-  } else {
-    ST7735_OutString((char*)"P2");
-    ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
-  }
 
   // Handle end game
   if (player1.getScore() >= 3) {
@@ -416,20 +395,45 @@ void EndRound() {
     Clock_Delay1ms(5000);
     EndGame(2);
   } else {
-    ST7735_SetCursor(0, 13);
-    ST7735_OutString((char*)"Switching Roles...");
-    Clock_Delay1ms(7000);
+      player1.reset();
+      player2.reset();
+      
+      // Show upcoming roles
+      ST7735_SetCursor(0, 5);
+      ST7735_OutString((char*)"Next Round Roles:");
+
+      ST7735_SetCursor(0, 7);
+      ST7735_OutString((char*)"Runner: ");
+      if (!player1.isChaser()) {
+        ST7735_OutString((char*)"P1");
+        ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
+      } else {
+        ST7735_OutString((char*)"P2");
+        ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }
+
+      ST7735_SetCursor(0, 9);
+      ST7735_OutString((char*)"Chaser: ");
+      if (player1.isChaser()) {
+        ST7735_OutString((char*)"P1");
+        ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
+      } else {
+        ST7735_OutString((char*)"P2");
+        ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }
+      ST7735_SetCursor(0, 13);
+      ST7735_OutString((char*)"Switching Roles...");
+      Clock_Delay1ms(7000);
+
+      DrawMap();
+      player1.draw();
+      player2.draw();
+      DrawScoreBoard();
+      gameTicks = 1350;
+      roundOver = false;
   }
 
   // Reset state for next round
-  player1.reset();
-  player2.reset();
-  DrawMap();
-  player1.draw();
-  player2.draw();
-  DrawScoreBoard();
-  gameTicks = 200;
-  roundOver = false;
 
   __enable_irq();
 }
@@ -454,7 +458,8 @@ void EndGame(uint8_t winnerID) {
   ST7735_OutString((char *)"Press any btn...");
 
   while (!(Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B1())); // wait for a button press
-
+  Clock_Delay1ms(1000);
   // go to menu page feature here
   returnToMenu = true;
+
 }

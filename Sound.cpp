@@ -77,6 +77,10 @@ void Sound_GameOver(void){
   Sound_Start(shoot, 4080); // Replace with actual length
 }
 
+void Sound_Explosion(void){
+  Sound_Start(explosion, 2000);
+}
+
 void Sound_Stop(void){
   SysTick->CTRL = 0; // disable SysTick
 }
