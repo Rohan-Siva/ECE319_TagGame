@@ -35,7 +35,5 @@ void Sound_GameOver(void);
 void DAC5_Out(uint32_t data);
 
 
-extern const uint8_t collect[16]; // Example short sound
-
 
 #endif // SOUND_H

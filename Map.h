@@ -10,6 +10,8 @@
 
 
 extern uint8_t map[GRID_HEIGHT][GRID_WIDTH];
+extern uint8_t basemap[GRID_HEIGHT][GRID_WIDTH];
+
 
 enum MenuSelection { MENU_PLAY, MENU_LANGUAGE, MENU_RULES };
 extern uint8_t currentSelection;
@@ -17,9 +19,16 @@ extern uint8_t language;
 #define MENU_COUNT 3
 #define RULES_PAGE_COUNT 3
 extern uint8_t currentRulesPage;
+extern volatile int gameTicks; // 1 minute at 30Hz
+extern volatile bool roundOver;
 
+void ResetMap(void);
 void DrawMap(void);
 void DrawMenu(void);
+
+void EndRound(void);
+void EndGame(uint8_t winnerID);
+
 void NavigateMenu(int direction);
 void SelectMenuItem(void);
 void DrawRules(void);

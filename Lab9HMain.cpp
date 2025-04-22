@@ -47,6 +47,9 @@ uint32_t Random(uint32_t n){
 }
 
 SlidePot Sensor(1500,0); // copy calibration from Lab 7
+Player player1(2,17, false,1);  // Runner
+Player player2(14, 2, true,2); // Chaser
+
 
 // games  engine runs at 30Hz
 void TIMG12_IRQHandler(void){uint32_t pos,msg;
@@ -61,8 +64,15 @@ void TIMG12_IRQHandler(void){uint32_t pos,msg;
     // 5) set semaphore
     // NO LCD OUTPUT IN INTERRUPT SERVICE ROUTINES
     GPIOB->DOUTTGL31_0 = GREEN; // toggle PB27 (minimally intrusive debugging)
+
+    player1.tickPowerups();
+    player2.tickPowerups();
+
+    if (gameTicks > 0) gameTicks--;
+    if (gameTicks == 0) roundOver = true;
   }
 }
+
 uint8_t TExaS_LaunchPadLogicPB27PB26(void){
   return (0x80|((GPIOB->DOUT31_0>>26)&0x03));
 }
@@ -121,8 +131,6 @@ int main1(void){ // main1
     }
   }
 }
-Player player1(2,17, false,1);  // Runner
-Player player2(14, 2, true,2); // Chaser
 
 int mainmenu(void){ // testing the menu
   __disable_irq();
@@ -202,11 +210,14 @@ int main22(void){ // testjoystick
 int main(void) {
 __disable_irq();
   PLL_Init(); // set bus speed
+  TimerG12_Init();
   LaunchPad_Init();
   ST7735_InitPrintf();
   Switch_Init();
   Joystick_Init();
   Sound_Init();
+  TimerG12_IntArm(2666666, 0); // 80 mhz bus clock, the period needs to be 2666666 for 30 hz timer
+
   __enable_irq();
 
   DrawMap();
@@ -230,6 +241,43 @@ __disable_irq();
       player2.draw();
       
     }
+
+    if (roundOver || player1.getCoins() >= 5 || player2.getCoins()>=5) {
+  // Runner gets 2 points if they collect 5 coins
+      if (player1.isChaser()) {
+    // Then player2 is runner
+        if (player2.getCoins() >= 5) {
+          player2.addScore(2);
+        } else if (roundOver) {
+          player2.addScore(1); // survived full round
+        }
+      } 
+      else {
+        // player1 is runner
+        if (player1.getCoins() >= 5) {
+          player1.addScore(2);
+        } else if (roundOver) {
+          player1.addScore(1); // survived full round
+        }
+      }
+
+        EndRound();
+        continue;
+      }
+
+
+// Detect "caught" by overlapping
+    if (player1.getX() == player2.getX() && player1.getY() == player2.getY()) {
+      if (player1.isChaser()) {
+        player1.addScore(1);
+      } else {
+        player2.addScore(1);
+      }
+      EndRound();
+      continue;
+    }
+
+
 
     if(Switch_P1B1()){
       player1.collectItem();
@@ -305,6 +353,9 @@ int main23(void){ // my switch movement
 
   }
 }
+
+
+
 // use main2 to observe graphics
 int main2(void){ // main2
   __disable_irq();

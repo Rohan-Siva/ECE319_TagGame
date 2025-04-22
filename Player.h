@@ -20,6 +20,9 @@ public:
   void collectItem();
   void reset();
   void usePowerup();
+  void tickPowerups();
+
+  void setPosition(uint8_t newX, uint8_t newY);
 
   uint8_t getX() const;
   uint8_t getY() const;
@@ -40,6 +43,8 @@ private:
   uint8_t coins;
   bool hasSpeed;
   bool hasGhost;
+  int speedTimer;
+  int ghostTimer;
 };
 
 #endif

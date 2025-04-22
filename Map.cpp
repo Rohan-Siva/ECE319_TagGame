@@ -1,21 +1,64 @@
-#include "Map.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <ti/devices/msp/msp.h>
 #include "../inc/ST7735.h"
-#include "Player.h"
+#include "../inc/Clock.h"
+#include "../inc/LaunchPad.h"
+#include "../inc/TExaS.h"
+#include "../inc/Timer.h"
+#include "../inc/SlidePot.h"
+#include "../inc/DAC5.h"
+#include "Joystick.h"
+#include "SmallFont.h"
+#include "LED.h"
+#include "Switch.h"
+#include "Sound.h"
 #include "images/images.h"
+#include "Map.h"
+#include "Player.h"
+#include "Switch.h"
+#include "Game_ADC.h"
+#include "JoyStick.h"
 
 #include <cstdlib>   // for rand()
 #include <ctime> 
 
+extern "C" void __disable_irq(void);
+extern "C" void __enable_irq(void);
+extern "C" void TIMG12_IRQHandler(void);
 extern Player player1;
 extern Player player2;
 
-
+volatile int gameTicks = 900; // 30s * 30Hz
+volatile bool roundOver = false;
 
 
 // Map definition (0 = floor, 1 = wall, 2 = coin)
+uint8_t basemap[GRID_HEIGHT][GRID_WIDTH] = {
+  {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,1,0,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
+  {2,0,0,1,1,0,0,0,1,0,1,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,1,2},
+  {2,0,1,0,0,1,0,0,1,0,1,0,0,0,1,2},
+  {2,0,0,0,0,0,0,1,0,0,0,0,0,0,0,2},
+  {2,0,0,1,1,0,0,1,0,0,1,0,1,0,0,2},
+  {2,0,0,0,0,0,0,0,1,0,0,0,0,1,0,2},
+  {2,0,0,1,0,0,1,0,1,0,1,0,0,1,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,0,0,1,1,0,0,0,0,0,0,0,1,1,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,1,1,1,0,0,1,0,1,0,0,0,1,1,1,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,0,1,1,0,0,0,0,0,0,1,0,0,0,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+  {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}
+};
 uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
-  {2,0,0,1,0,0,2,0,1,0,0,0,0,1,0,2},
+  {2,0,0,1,0,0,0,0,1,0,0,0,0,1,0,2},
   {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
   {2,0,0,1,0,0,0,0,1,0,0,0,0,0,0,2},
   {2,0,0,1,1,0,0,0,1,0,1,0,0,0,0,2},
@@ -37,13 +80,21 @@ uint8_t map[GRID_HEIGHT][GRID_WIDTH] = {
 };
 
 
+
 // theres an extra layer that doesnt show up down here
 
-
+void ResetMap(void) {
+  for (int row = 0; row < GRID_HEIGHT; row++) {
+    for (int col = 0; col < GRID_WIDTH; col++) {
+      map[row][col] = basemap[row][col];
+    }
+  }
+}
 
 
 void DrawMap(void) {
   ST7735_FillScreen(0x0000);
+  ResetMap();
   placeRandomCoins(map, 7);
   placePowerups(map);
   for (int row = 0; row < GRID_HEIGHT; row++) {
@@ -310,4 +361,72 @@ void placePowerups(uint8_t map[GRID_HEIGHT][GRID_WIDTH]) {
             }
         }
     }
+}
+
+void EndRound() {
+  __disable_irq();
+  ST7735_FillScreen(ST7735_BLACK);
+  ST7735_SetTextColor(0xFFFF);
+  ST7735_SetCursor(0, 0);
+  ST7735_OutString((char*)"--- Round Over ---");
+
+  ST7735_SetCursor(0, 2);
+  ST7735_OutString((char*)"P1 Score: ");
+  ST7735_OutUDec(player1.getScore());
+
+  ST7735_SetCursor(0, 3);
+  ST7735_OutString((char*)"P2 Score: ");
+  ST7735_OutUDec(player2.getScore());
+
+  if (player1.getScore() >= 3) {
+    Clock_Delay1ms(5000);
+    EndGame(1);
+  } else if (player2.getScore() >= 3) {
+    Clock_Delay1ms(5000);
+    EndGame(2);
+  }else{
+    ST7735_SetCursor(0, 5);
+    ST7735_OutString((char*)"Switching Roles...");
+  }
+
+  
+  Clock_Delay1ms(5000);
+
+  player1.reset(); // resets powerups, coins, switches roles
+  player2.reset();
+
+  // Re-draw map and players
+  DrawMap();
+  player1.draw();
+  player2.draw();
+  DrawScoreBoard();
+
+  // Reset game state
+  gameTicks = 200;
+  roundOver = false;
+  __enable_irq();
+}
+
+void EndGame(uint8_t winnerID) {
+  __disable_irq();
+  ST7735_FillScreen(ST7735_BLACK);
+  ST7735_SetTextColor(0xFFFF);
+  ST7735_SetCursor(2, 3);
+  ST7735_OutString((char *)"*** GAME OVER ***");
+
+  ST7735_SetCursor(2, 5);
+  if (winnerID == 1) {
+    ST7735_OutString((char *)"Player 1 Wins!");
+  } else {
+    ST7735_OutString((char *)"Player 2 Wins!");
+  }
+
+  ST7735_SetCursor(2, 7);
+  ST7735_OutString((char *)"Press any btn...");
+
+  while (!(Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B1())); // wait for a button press
+  Clock_Delay1ms(1000); // debounce delay
+
+  // go to menu page feature here
+  DrawMenu();
 }

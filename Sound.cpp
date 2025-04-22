@@ -21,10 +21,6 @@ static uint32_t SoundLength;
 #define SYSTICK_FREQ 11000
 #define SYSTICK_PERIOD (80000000 / SYSTICK_FREQ) // Assuming 80MHz clock
 
-const uint8_t collect[16] = {
-  16, 20, 24, 28, 31, 28, 24, 20,
-  16, 12,  8,  4,  0,  4,  8, 12
-};
 
 
 void SysTick_IntArm(uint32_t period, uint32_t priority){
@@ -69,16 +65,16 @@ void Sound_Start(const uint8_t *pt, uint32_t count){
 }
 
 void Sound_Shoot(void){
-  Sound_Start(collect, 4080);
+  Sound_Start(shoot, 4080);
 }
 void Sound_Killed(void){
-  Sound_Start(collect, 3500); // Replace with actual length
+  Sound_Start(shoot, 4080); // Replace with actual length
 }
 void Sound_Collect(void){
-  Sound_Start(collect, 16); // Replace with actual length
+  Sound_Start(shoot, 4080); // Replace with actual length
 }
 void Sound_GameOver(void){
-  Sound_Start(collect, 5000); // Replace with actual length
+  Sound_Start(shoot, 4080); // Replace with actual length
 }
 
 void Sound_Stop(void){

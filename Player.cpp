@@ -23,6 +23,9 @@ Player::Player(uint8_t startX, uint8_t startY, bool isChaser, uint8_t id) {
   coins = 0;
   hasSpeed = false;
   hasGhost = false;
+  speedTimer = 0; 
+  ghostTimer = 0;
+
 }
 
 uint8_t Player::getID() const {
@@ -53,7 +56,7 @@ void Player::move(int8_t dx, int8_t dy) {
 
 
 void Player::collectItem(){
-  if(map[y][x]==3){
+  if(map[y][x]==3 && !isChaser()){
     coins+=1;
     map[y][x]=0;
     UpdateCoin(playerID,coins);
@@ -62,7 +65,7 @@ void Player::collectItem(){
     Sound_Collect();
     return;
   }
-  if(getPowerup()!=PowerupType::None){
+  if(getPowerup()!=PowerupType::None){ // already has powerup
     //play error sound
     return;
   }
@@ -70,7 +73,7 @@ void Player::collectItem(){
   if(map[y][x]==4){
     setPowerup(PowerupType::Speed);
   }
-  else if(map[y][x]==5){
+  else if(map[y][x]==5 && isChaser()){
     setPowerup(PowerupType::Mine);
   }
   else if(map[y][x]==6){
@@ -94,17 +97,59 @@ void Player::usePowerup(){
   if(getPowerup()==PowerupType::None){
     return;
   }
-  if(getPowerup()==PowerupType::Mine) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
-  if(getPowerup()==PowerupType::Speed) hasSpeed = true;
-  if(getPowerup()==PowerupType::Ghost) hasGhost = true;
+  if(getPowerup()==PowerupType::Mine && isChaser()) ST7735_DrawBitmap(x*TILE_SIZE, y*TILE_SIZE, MineSprite, TILE_SIZE, TILE_SIZE);
+  if(getPowerup()==PowerupType::Speed) {
+    hasSpeed = true;
+    hasGhost = false;
+    speedTimer = 90; // 3 seconds since we use timerg12 30 hz
+  }
+  if(getPowerup()==PowerupType::Ghost) {
+    hasGhost = true;
+    hasSpeed = false; // only one power on at a time
+    ghostTimer = 90;
+  }
+
   setPowerup(PowerupType::None);
 }
 
 void Player::reset() {
   coins = 0;
   powerup = PowerupType::None;
-  chaser = !chaser;
+  hasSpeed = false;
+  hasGhost = false;
+  speedTimer = 0;
+  ghostTimer = 0;
+  chaser = !chaser; // swap role
+
+
+  if (chaser) {
+    setPosition(14, 2);  // chaser start position
+  } else {
+    setPosition(2, 17);  // runner start position
+  }
 }
+
+void Player::setPosition(uint8_t newX, uint8_t newY) {
+  x = newX;
+  y = newY;
+}
+
+
+void Player::tickPowerups() {
+  if (hasSpeed && speedTimer > 0) {
+    speedTimer--;
+    if (speedTimer == 0) {
+      hasSpeed = false;
+    }
+  }
+  if (hasGhost && ghostTimer > 0) {
+    ghostTimer--;
+    if (ghostTimer == 0) {
+      hasGhost = false;
+    }
+  }
+}
+
 
 uint8_t Player::getX() const { 
     return x; 
