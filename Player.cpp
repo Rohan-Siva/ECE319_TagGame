@@ -173,10 +173,10 @@ void Player::draw() const {
   int screenX = x * TILE_SIZE;
   int screenY = y * TILE_SIZE;
 
-  if (chaser) {
-    ST7735_DrawBitmap(screenX, screenY, ChaserSprite, TILE_SIZE, TILE_SIZE);
+  if (getID()==1) {
+    ST7735_DrawBitmap(screenX, screenY, P1Sprite, TILE_SIZE, TILE_SIZE);
   } else {
-    ST7735_DrawBitmap(screenX, screenY, RunnerSprite, TILE_SIZE, TILE_SIZE);
+    ST7735_DrawBitmap(screenX, screenY, P2Sprite, TILE_SIZE, TILE_SIZE);
   }
 }
 

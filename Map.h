@@ -21,6 +21,8 @@ extern uint8_t language;
 extern uint8_t currentRulesPage;
 extern volatile int gameTicks; // 1 minute at 30Hz
 extern volatile bool roundOver;
+extern volatile bool returnToMenu;
+
 
 void ResetMap(void);
 void DrawMap(void);

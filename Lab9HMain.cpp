@@ -132,227 +132,126 @@ int main1(void){ // main1
   }
 }
 
-int mainmenu(void){ // testing the menu
-  __disable_irq();
-  PLL_Init(); // set bus speed
-  LaunchPad_Init();
-  ST7735_InitPrintf();
-  Switch_Init();
-    //note: if you colors are weird, see different options for
-    // ST7735_InitR(INITR_REDTAB); inside ST7735_InitPrintf()
-  //DrawMap();
+int mainmenu(void) {
+
   DrawMenu();
+
   while (1) {
-    // bool godown = Switch_MenuDownPressed();
-    // bool selected = Switch_MenuSelectPressed();
+    JoystickDirection d1 = GetDiscreteJoystickDirection(Joystick1_ReadY(), Joystick1_ReadX());
+    JoystickDirection d2 = GetDiscreteJoystickDirection(Joystick2_ReadX(), Joystick2_ReadY());
 
-    // if (selected) { // select button pressed
-    //   SelectMenuItem();
-    //   Clock_Delay1ms(500);
 
-    //   // If in rules, wait for another press to advance page
-    //   if (currentSelection == MENU_RULES) {
-    //     while (1) {
-    //       bool nextpage = Switch_MenuSelectPressed();
-    //       if (nextpage) {
-    //         NextRulesPage();
-    //         Clock_Delay1ms(300);
-    //       }
-    //       if(currentRulesPage==0){
-    //         break;
-    //       }
-    //     }
-    //   }
-    // }
-    // else if(godown){
-    //   NavigateMenu(1);
-    //   Clock_Delay1ms(200);
+    bool selected =
+      Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B2();
 
-    // }
+    NavigateMenu(d1.dy);
+    Clock_Delay1ms(150); // debounce
 
-  }
-  DrawMap();
-  //while(!switchpressed){}
-  DrawRules();
-  Clock_Delay1ms(1000);
-  NextRulesPage();
-  Clock_Delay1ms(1000);
-  NextRulesPage();
+    if (selected) {
+      SelectMenuItem();
+      Clock_Delay1ms(500); // delay to avoid rapid re-entry
 
-  
-  //player1.move(1, 0); // move right
-  player2.addScore(2);
+      // Wait for rules screen if selected
+      if (currentSelection == MENU_RULES) {
+        while (1) {
+          bool next = Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B2();
+          if (next) {
+            NextRulesPage();
+            Clock_Delay1ms(300);
+          }
+          if (currentRulesPage == 0) break;
+        }
+      }
 
-  DrawScores();
-
-  while(1){
+      if (currentSelection == MENU_PLAY) {
+        return 0; // Exit menu and allow main game to run
+      }
+    }
   }
 }
 
-int main22(void){ // testjoystick
-  Joystick_Init();
-  __disable_irq();
-  PLL_Init(); // set bus speed
-  LaunchPad_Init();
-  ST7735_InitPrintf();
-
-  while(1){
-    int x1 = Joystick1_ReadX(); // x is up, up max is 4090 ish
-    int y1 = Joystick1_ReadY(); // y left all the way is 4090 ish
-
-    int x2 = Joystick1_ReadX(); // x is down, down max is 0 ish
-    int y2 = Joystick1_ReadY(); // y is right, right max is 0-10 ish
-  }
 
 
-}
 
 int main(void) {
-__disable_irq();
-  PLL_Init(); // set bus speed
+  __disable_irq();
+  PLL_Init(); 
   TimerG12_Init();
   LaunchPad_Init();
   ST7735_InitPrintf();
   Switch_Init();
   Joystick_Init();
   Sound_Init();
-  TimerG12_IntArm(2666666, 0); // 80 mhz bus clock, the period needs to be 2666666 for 30 hz timer
-
+  TimerG12_IntArm(2666666, 0); 
   __enable_irq();
 
-  DrawMap();
-  player1.draw();
-  player2.draw();
-  DrawScoreBoard();
+  while (1) {
+    // Start at the main menu
+    mainmenu();  // <- Waits for player to select "Play"
 
-  while(1){
-    JoystickDirection dir1 = GetDiscreteJoystickDirection(Joystick1_ReadY(), Joystick1_ReadX());
-    JoystickDirection dir2 = GetDiscreteJoystickDirection(Joystick2_ReadX(), Joystick2_ReadY());
+    // Reset state before game begins
+    player1.reset(); 
+    player2.reset();
+    player1.addScore(-player1.getScore());  // clear score
+    player2.addScore(-player2.getScore());
+    roundOver = false;
+    gameTicks = 900;
 
-    if(dir1.dx || dir1.dy) {
-      player1.erase();
-      player1.move(dir1.dx, dir1.dy);
-      player1.draw();
-    }
+    DrawMap();
+    player1.draw();
+    player2.draw();
+    DrawScoreBoard();
 
-    if(dir2.dx || dir2.dy) {
-      player2.erase();
-      player2.move(dir2.dx, dir2.dy);
-      player2.draw();
-      
-    }
+    // Main game loop
+    while (!returnToMenu) {
+      JoystickDirection dir1 = GetDiscreteJoystickDirection(Joystick1_ReadY(), Joystick1_ReadX());
+      JoystickDirection dir2 = GetDiscreteJoystickDirection(Joystick2_ReadX(), Joystick2_ReadY());
 
-    if (roundOver || player1.getCoins() >= 5 || player2.getCoins()>=5) {
-  // Runner gets 2 points if they collect 5 coins
-      if (player1.isChaser()) {
-    // Then player2 is runner
-        if (player2.getCoins() >= 5) {
-          player2.addScore(2);
-        } else if (roundOver) {
-          player2.addScore(1); // survived full round
-        }
-      } 
-      else {
-        // player1 is runner
-        if (player1.getCoins() >= 5) {
-          player1.addScore(2);
-        } else if (roundOver) {
-          player1.addScore(1); // survived full round
-        }
+      if (dir1.dx || dir1.dy) {
+        player1.erase();
+        player1.move(dir1.dx, dir1.dy);
+        player1.draw();
       }
 
+      if (dir2.dx || dir2.dy) {
+        player2.erase();
+        player2.move(dir2.dx, dir2.dy);
+        player2.draw();
+      }
+
+      if (roundOver || player1.getCoins() >= 5 || player2.getCoins() >= 5) {
+        if (player1.isChaser()) {
+          if (player2.getCoins() >= 5) player2.addScore(2);
+          else if (roundOver) player2.addScore(1);
+        } else {
+          if (player1.getCoins() >= 5) player1.addScore(2);
+          else if (roundOver) player1.addScore(1);
+        }
         EndRound();
         continue;
       }
 
-
-// Detect "caught" by overlapping
-    if (player1.getX() == player2.getX() && player1.getY() == player2.getY()) {
-      if (player1.isChaser()) {
-        player1.addScore(1);
-      } else {
-        player2.addScore(1);
+      if (player1.getX() == player2.getX() && player1.getY() == player2.getY()) {
+        if (player1.isChaser()) player1.addScore(1);
+        else player2.addScore(1);
+        EndRound();
+        continue;
       }
-      EndRound();
-      continue;
-    }
 
+      if (Switch_P1B1()) player1.collectItem();
+      if (Switch_P1B2()) player1.usePowerup();
+      if (Switch_P2B1()) player2.collectItem();
+      if (Switch_P2B2()) player2.usePowerup();
 
-
-    if(Switch_P1B1()){
-      player1.collectItem();
-    }
-
-    if(Switch_P1B2()){
-      player1.usePowerup();
-    }
-
-    if(Switch_P2B1()){
-      player2.collectItem();
-    }
-
-    if(Switch_P2B2()){
-      player2.usePowerup();
-    }
-
-    Clock_Delay1ms(200);
-  }
-}
-
-int main23(void){ // my switch movement
-   __disable_irq();
-  PLL_Init(); // set bus speed
-  LaunchPad_Init();
-  ST7735_InitPrintf();
-  Switch_Init();
-
-  DrawMap();
-  player1.draw();
-  player2.draw();
-
-  DrawScoreBoard();
-
-  while(1){
-    // if(temppickup()){
-    //   player1.collectItem();
-    //   Clock_Delay1ms(200);
-    //   continue;
-    // }
-    // if(tempuse()){
-    //   player1.usePowerup();
-    //   Clock_Delay1ms(200);
-    //   continue;
-    // }
-    // if(Switch_MenuDownPressed()){
-    //   player1.erase();
-    //   player1.move(0, -1);
-    //   player1.draw();
-    //   Clock_Delay1ms(200);
-
-    // }
-    // if(Switch_MenuSelectPressed()){
-    //   player1.erase();
-    //   player1.move(0, 1);
-    //   player1.draw();
-    //   Clock_Delay1ms(200);
-    // }
-
-    if(Switch_P1B1()){
-      player1.erase();
-      player1.move(-1, 0);
-      player1.draw();
-      Clock_Delay1ms(200);
-
-    }
-    if(Switch_P1B2()){
-      player1.erase();
-      player1.move(1, 0);
-      player1.draw();
       Clock_Delay1ms(200);
     }
 
+    // After EndGame() is triggered and returnToMenu == true
+    returnToMenu = false; // reset before next loop iteration
   }
 }
+
+
 
 
 
