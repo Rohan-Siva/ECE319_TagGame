@@ -48,7 +48,7 @@ uint32_t Random(uint32_t n){
 
 SlidePot Sensor(1500,0); // copy calibration from Lab 7
 Player player1(2,17, false,1);  // Runner
-Player player2(14, 2, true,2); // Chaser
+Player player2(13, 2, true,2); // Chaser
 
 
 // games  engine runs at 30Hz
@@ -234,8 +234,6 @@ int main(void) {
       if (player1.getX() == player2.getX() && player1.getY() == player2.getY()) {
         if (player1.isChaser()) player1.addScore(1);
         else player2.addScore(1);
-        Sound_Killed();
-        Clock_Delay1ms(300);
         EndRound();
         continue;
       }

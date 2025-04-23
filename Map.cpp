@@ -39,22 +39,22 @@ volatile bool returnToMenu = false;
 uint8_t basemap[GRID_HEIGHT][GRID_WIDTH] = {
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
   {2,0,1,0,0,0,0,0,0,0,0,0,0,0,1,2},
-  {2,0,1,0,1,1,1,0,1,1,1,0,1,0,1,2},
+  {2,0,1,0,0,1,1,0,0,1,1,0,0,0,1,2},
   {2,0,1,0,0,0,1,0,0,0,1,0,0,0,1,2},
-  {2,0,1,1,1,0,1,1,1,0,1,1,1,0,1,2},
+  {2,0,1,1,0,0,1,1,0,0,1,1,0,0,1,2},
   {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-  {2,1,1,1,0,1,1,1,0,1,1,1,0,1,1,2},
+  {2,1,1,0,0,1,1,0,0,1,1,0,0,1,1,2},
   {2,0,0,1,0,0,0,1,0,0,0,1,0,0,0,2},
-  {2,0,1,1,1,1,0,1,1,1,0,1,1,1,0,2},
+  {2,0,1,1,1,1,0,1,1,1,0,0,1,1,1,2},
   {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-  {2,1,0,1,1,1,1,1,1,1,1,1,1,1,0,2},
-  {2,1,0,0,0,0,0,4,0,0,0,0,0,0,0,2},
-  {2,1,1,1,1,1,0,1,1,1,1,1,1,1,0,2},
-  {2,0,0,0,0,0,0,0,0,0,0,0,5,0,0,2},
-  {2,0,1,1,1,1,1,1,1,1,1,1,1,1,1,2},
-  {2,0,0,0,0,0,0,6,0,0,0,0,0,0,0,2},
-  {2,1,1,0,1,1,1,1,1,1,1,1,1,1,0,2},
-  {2,0,0,0,0,0,0,0,0,0,0,3,0,0,0,2},
+  {2,1,0,0,1,1,1,1,1,1,1,1,1,0,0,2},
+  {2,1,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,1,1,1,1,1,0,0,1,1,1,1,1,1,1,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,0,0,1,1,1,1,1,1,1,1,0,0,1,1,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
+  {2,1,1,0,0,1,1,1,1,1,1,1,1,1,0,2},
+  {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
   {2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
   {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 };
@@ -135,35 +135,41 @@ uint8_t currentSelection = MENU_PLAY;
 uint8_t language = 0; // 0 = English, 1 = Español
 
 void DrawMenu(void) {
-  ST7735_FillScreen(0x0000); // black background
+  ST7735_FillScreen(0x0000); 
   ST7735_DrawBitmap(0, 160, mainScreen, 128, 160);
+  ST7735_SetTextColor(0xFFFF); 
 
-  // Draw "TAG" logo
-  // Option 1: As text
-  // ST7735_SetTextColor(0x07FF); // Cyan
-  // ST7735_SetCursor(6, 1);
-  // ST7735_OutString((char *)"== TAG ==");
-
-  // Option 2: Draw sprite instead (if you create one)
-  //DrawLogo(28, 6);
-
-  //ST7735_DrawBitmap(50, 80, TAGSprite, 64, 64);
-
-
-  // Reset color for menu
-  ST7735_SetTextColor(0xFFFF); // White
-
-  // Draw buttons
   ST7735_SetCursor(6, 12);
-  ST7735_OutString((char *)(currentSelection == MENU_PLAY ? "> Play" : "  Play"));
+  if(language == 0)
+    ST7735_OutString((char *)(currentSelection == MENU_PLAY ? "> Play" : "  Play"));
+  else
+    ST7735_OutString((char *)(currentSelection == MENU_PLAY ? "> Jugar" : "  Jugar"));
 
   ST7735_SetCursor(1, 13);
-  ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Language: " : "  Language: "));
-  ST7735_OutString((char *)(language == 0 ? "English" : "Espa\xA4ol"));
+  if(language == 0)
+    ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Language: English" : "  Language: English"));
+  else
+    ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Idioma: Español" : "  Idioma: Español"));
 
   ST7735_SetCursor(6, 14);
-  ST7735_OutString((char *)(currentSelection == MENU_RULES ? "> Rules" : "  Rules"));
+  if(language == 0)
+    ST7735_OutString((char *)(currentSelection == MENU_RULES ? "> Rules" : "  Rules"));
+  else
+    ST7735_OutString((char *)(currentSelection == MENU_RULES ? "> Reglas" : "  Reglas"));
 }
+
+const char* rulesText_English[RULES_PAGE_COUNT][10] = {
+  {"TAG-2P Chasing Game", "", "1 player is Chaser,", "other is Runner.", "", "Collect coins or ", "chase!", "", "", ""},
+  {"Controls:", "", " 2 joysticks to move", " 2 buttons per", " player", "", "Powerups:", "  > Speed Boost", "  > Plant mines", "  > Ghost"},
+  {"Scoring:", "", "+1: Chaser catches", "", "+2: Runner collects ", "    all coins", "", "+1: Runner survives", "", "First to 3 wins!"}
+};
+
+const char* rulesText_Spanish[RULES_PAGE_COUNT][10] = {
+  {"TAG-2P Juego de persecución", "", "1 jugador es Perseguidor,", "otro es Corredor.", "", "¡Recoge monedas o ", "persigue!", "", "", ""},
+  {"Controles:", "", " 2 joysticks para mover", " 2 botones por", " jugador", "", "Poderes:", "  > Velocidad extra", "  > Minas", "  > Fantasma"},
+  {"Puntaje:", "", "+1: El perseguidor atrapa", "", "+2: El corredor recoge", "    todas las monedas", "", "+1: Sobrevive el corredor", "", "¡Gana el primero a 3!"}
+};
+
 
 void NavigateMenu(int direction) {
   if (direction == 1) {
@@ -237,18 +243,21 @@ const char* rulesText[RULES_PAGE_COUNT][10] = {
 };
 
 void DrawRules(void) {
-  ST7735_FillScreen(0x0000); // Clear to black
-  ST7735_SetTextColor(0xFFFF); // White
+  ST7735_FillScreen(0x0000); 
+  ST7735_SetTextColor(0xFFFF); 
+
+  const char** rules = (language == 0) ? (const char**)rulesText_English[currentRulesPage] : (const char**)rulesText_Spanish[currentRulesPage];
 
   for (int i = 0; i < 10; i++) {
     ST7735_SetCursor(0, i);
-    ST7735_OutString((char *)rulesText[currentRulesPage][i]);
+    ST7735_OutString((char *)rules[i]);
   }
 
   ST7735_SetCursor(0, 11);
-  ST7735_SetTextColor(0x07E0); // Green
-  ST7735_OutString((char *)"Press Btn -> Next");
+  ST7735_SetTextColor(0x07E0); 
+  ST7735_OutString((char *)(language == 0 ? "Press Btn -> Next" : "Presiona Btn -> Sig"));
 }
+
 
 void NextRulesPage(void) {
   if(currentRulesPage==RULES_PAGE_COUNT){
@@ -369,97 +378,86 @@ void placePowerups(uint8_t map[GRID_HEIGHT][GRID_WIDTH]) {
 }
 
 void EndRound() {
-  __disable_irq();
+  Sound_GameOver();
   ST7735_FillScreen(ST7735_BLACK);
   ST7735_SetTextColor(0xFFFF);
   ST7735_SetCursor(0, 0);
 
-  ST7735_OutString((char*)"--- Round Over ---");
+  ST7735_OutString((char*)(language == 0 ? "--- Round Over ---" : "--- Fin de Ronda ---"));
 
-  // Draw scores
   ST7735_SetCursor(0, 2);
-  ST7735_OutString((char*)"P1 Score: ");
+  ST7735_OutString((char*)(language == 0 ? "P1 Score: " : "P1 Puntaje: "));
   ST7735_OutUDec(player1.getScore());
 
   ST7735_SetCursor(0, 3);
-  ST7735_OutString((char*)"P2 Score: ");
+  ST7735_OutString((char*)(language == 0 ? "P2 Score: " : "P2 Puntaje: "));
   ST7735_OutUDec(player2.getScore());
 
-
-
-  // Handle end game
-  if (player1.getScore() >= 3) {
+  if (player1.getScore() >= 3 || player2.getScore() >= 3) {
     Clock_Delay1ms(5000);
-    EndGame(1);
-  } else if (player2.getScore() >= 3) {
-    Clock_Delay1ms(5000);
-    EndGame(2);
+    EndGame(player1.getScore() >= 3 ? 1 : 2);
   } else {
-      player1.reset();
-      player2.reset();
-      
-      // Show upcoming roles
-      ST7735_SetCursor(0, 5);
-      ST7735_OutString((char*)"Next Round Roles:");
+    player1.reset();
+    player2.reset();
 
-      ST7735_SetCursor(0, 7);
-      ST7735_OutString((char*)"Runner: ");
-      if (!player1.isChaser()) {
-        ST7735_OutString((char*)"P1");
-        ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
-      } else {
-        ST7735_OutString((char*)"P2");
-        ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
-      }
+    ST7735_SetCursor(0, 5);
+    ST7735_OutString((char*)(language == 0 ? "Next Round Roles:" : "Roles Próxima Ronda:"));
 
-      ST7735_SetCursor(0, 9);
-      ST7735_OutString((char*)"Chaser: ");
-      if (player1.isChaser()) {
-        ST7735_OutString((char*)"P1");
-        ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
-      } else {
-        ST7735_OutString((char*)"P2");
-        ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
-      }
-      ST7735_SetCursor(0, 13);
-      ST7735_OutString((char*)"Switching Roles...");
-      Clock_Delay1ms(7000);
+    ST7735_SetCursor(0, 7);
+    ST7735_OutString((char*)(language == 0 ? "Runner: " : "Corredor: "));
+    if (!player1.isChaser()) {
+      ST7735_OutString((char*)"P1");
+      ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
+    } else {
+      ST7735_OutString((char*)"P2");
+      ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
+    }
 
-      DrawMap();
-      player1.draw();
-      player2.draw();
-      DrawScoreBoard();
-      gameTicks = 1350;
-      roundOver = false;
+    ST7735_SetCursor(0, 9);
+    ST7735_OutString((char*)(language == 0 ? "Chaser: " : "Perseguidor: "));
+    if (player1.isChaser()) {
+      ST7735_OutString((char*)"P1");
+      ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
+    } else {
+      ST7735_OutString((char*)"P2");
+      ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
+    }
+
+    ST7735_SetCursor(0, 13);
+    ST7735_OutString((char*)(language == 0 ? "Switching Roles..." : "Cambiando Roles..."));
+    Clock_Delay1ms(7000);
+
+    DrawMap();
+    player1.draw();
+    player2.draw();
+    DrawScoreBoard();
+    gameTicks = 1350;
+    roundOver = false;
   }
 
-  // Reset state for next round
-
-  __enable_irq();
 }
+
 
 
 
 void EndGame(uint8_t winnerID) {
-  __disable_irq();
+  Sound_GameOver();
   ST7735_FillScreen(ST7735_BLACK);
   ST7735_SetTextColor(0xFFFF);
   ST7735_SetCursor(2, 3);
-  ST7735_OutString((char *)"*** GAME OVER ***");
+  ST7735_OutString((char *)(language == 0 ? "*** GAME OVER ***" : "*** FIN DEL JUEGO ***"));
 
   ST7735_SetCursor(2, 5);
-  if (winnerID == 1) {
-    ST7735_OutString((char *)"Player 1 Wins!");
-  } else {
-    ST7735_OutString((char *)"Player 2 Wins!");
-  }
+  if (winnerID == 1)
+    ST7735_OutString((char *)(language == 0 ? "Player 1 Wins!" : "¡Jugador 1 Gana!"));
+  else
+    ST7735_OutString((char *)(language == 0 ? "Player 2 Wins!" : "¡Jugador 2 Gana!"));
 
   ST7735_SetCursor(2, 7);
-  ST7735_OutString((char *)"Press any btn...");
+  ST7735_OutString((char *)(language == 0 ? "Press any btn..." : "Presiona un botón..."));
 
-  while (!(Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B1())); // wait for a button press
+  while (!(Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B2())); 
   Clock_Delay1ms(1000);
-  // go to menu page feature here
   returnToMenu = true;
-
 }
+

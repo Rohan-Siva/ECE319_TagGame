@@ -18,7 +18,7 @@ static uint32_t SoundIndex;
 static uint32_t SoundLength;
 
 // SysTick period for 11kHz
-#define SYSTICK_FREQ 11000
+#define SYSTICK_FREQ 11025
 #define SYSTICK_PERIOD (80000000 / SYSTICK_FREQ) // Assuming 80MHz clock
 
 
@@ -74,7 +74,7 @@ void Sound_Collect(void){
   Sound_Start(collect, 10424); // Replace with actual length
 }
 void Sound_GameOver(void){
-  Sound_Start(shoot, 4080); // Replace with actual length
+  Sound_Start(gameover, 16704); // Replace with actual length
 }
 
 void Sound_Explosion(void){

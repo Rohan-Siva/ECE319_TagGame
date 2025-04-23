@@ -147,7 +147,7 @@ void Player::reset() {
 
 
   if (chaser) {
-    setPosition(14, 2);  // chaser start position
+    setPosition(13, 2);  // chaser start position
   } else {
     setPosition(2, 17);  // runner start position
   }
