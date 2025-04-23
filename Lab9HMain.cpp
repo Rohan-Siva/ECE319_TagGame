@@ -234,6 +234,8 @@ int main(void) {
       if (player1.getX() == player2.getX() && player1.getY() == player2.getY()) {
         if (player1.isChaser()) player1.addScore(1);
         else player2.addScore(1);
+        Sound_Killed();
+        Clock_Delay1ms(300);
         EndRound();
         continue;
       }

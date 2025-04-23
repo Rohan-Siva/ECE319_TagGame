@@ -94,7 +94,8 @@ void Player::collectItem(){
   if(map[y][x]==4){
     setPowerup(PowerupType::Speed);
   }
-  else if(map[y][x]==5 && isChaser()){
+  else if(map[y][x]==5){
+    if(!isChaser()) return;
     setPowerup(PowerupType::Mine);
   }
   else if(map[y][x]==6){

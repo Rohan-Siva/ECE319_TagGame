@@ -68,10 +68,10 @@ void Sound_Shoot(void){
   Sound_Start(shoot, 4080);
 }
 void Sound_Killed(void){
-  Sound_Start(shoot, 4080); // Replace with actual length
+  Sound_Start(invaderkilled, 3377); // Replace with actual length
 }
 void Sound_Collect(void){
-  Sound_Start(shoot, 4080); // Replace with actual length
+  Sound_Start(collect, 10424); // Replace with actual length
 }
 void Sound_GameOver(void){
   Sound_Start(shoot, 4080); // Replace with actual length
