@@ -149,7 +149,7 @@ void DrawMenu(void) {
   if(language == 0)
     ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Language: English" : "  Language: English"));
   else
-    ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Idioma: Español" : "  Idioma: Español"));
+    ST7735_OutString((char *)(currentSelection == MENU_LANGUAGE ? "> Idioma: Espa\xA4ol" : "  Idioma: Espa\xA4ol"));
 
   ST7735_SetCursor(6, 14);
   if(language == 0)
@@ -165,9 +165,9 @@ const char* rulesText_English[RULES_PAGE_COUNT][10] = {
 };
 
 const char* rulesText_Spanish[RULES_PAGE_COUNT][10] = {
-  {"TAG-2P Juego de persecución", "", "1 jugador es Perseguidor,", "otro es Corredor.", "", "¡Recoge monedas o ", "persigue!", "", "", ""},
-  {"Controles:", "", " 2 joysticks para mover", " 2 botones por", " jugador", "", "Poderes:", "  > Velocidad extra", "  > Minas", "  > Fantasma"},
-  {"Puntaje:", "", "+1: El perseguidor atrapa", "", "+2: El corredor recoge", "    todas las monedas", "", "+1: Sobrevive el corredor", "", "¡Gana el primero a 3!"}
+  {"TAG-2P Juego TAG", "", "1 persigue,", "1 escapa.", "", "Toma monedas o", "persigue!", "", "", ""},
+  {"Controles:", "", " Joystick: mover", " 2 botones por", " jugador", "", "Poderes:", " > Rapidez", " > Minas", " > Fantasma"},
+  {"Puntos:", "", "+1: Atrapar", "+2: Todas monedas", "", "+1: Escapa", "", "Gana con 3 pts", ""}
 };
 
 
@@ -383,7 +383,7 @@ void EndRound() {
   ST7735_SetTextColor(0xFFFF);
   ST7735_SetCursor(0, 0);
 
-  ST7735_OutString((char*)(language == 0 ? "--- Round Over ---" : "--- Fin de Ronda ---"));
+  ST7735_OutString((char*)(language == 0 ? "Round Over " : "Fin de Ronda "));
 
   ST7735_SetCursor(0, 2);
   ST7735_OutString((char*)(language == 0 ? "P1 Score: " : "P1 Puntaje: "));
@@ -401,26 +401,42 @@ void EndRound() {
     player2.reset();
 
     ST7735_SetCursor(0, 5);
-    ST7735_OutString((char*)(language == 0 ? "Next Round Roles:" : "Roles Próxima Ronda:"));
+    ST7735_OutString((char*)(language == 0 ? "Next Round Roles:" : "Roles Proxima Ronda:"));
 
     ST7735_SetCursor(0, 7);
     ST7735_OutString((char*)(language == 0 ? "Runner: " : "Corredor: "));
     if (!player1.isChaser()) {
       ST7735_OutString((char*)"P1");
-      ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
+      if(language==0){
+        ST7735_DrawBitmap(70, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
+      }else{
+        ST7735_DrawBitmap(80, 77, P1Sprite, TILE_SIZE, TILE_SIZE);
+      }
     } else {
       ST7735_OutString((char*)"P2");
-      ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
+      if(language==0){
+        ST7735_DrawBitmap(70, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }else{
+        ST7735_DrawBitmap(80, 77, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }
     }
 
     ST7735_SetCursor(0, 9);
     ST7735_OutString((char*)(language == 0 ? "Chaser: " : "Perseguidor: "));
     if (player1.isChaser()) {
       ST7735_OutString((char*)"P1");
-      ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
+      if(language==0){
+        ST7735_DrawBitmap(70, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
+      }else{
+        ST7735_DrawBitmap(100, 97, P1Sprite, TILE_SIZE, TILE_SIZE);
+      }
     } else {
       ST7735_OutString((char*)"P2");
-      ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
+      if(language==0){
+        ST7735_DrawBitmap(70, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }else{
+        ST7735_DrawBitmap(100, 97, P2Sprite, TILE_SIZE, TILE_SIZE);
+      }
     }
 
     ST7735_SetCursor(0, 13);
@@ -445,7 +461,7 @@ void EndGame(uint8_t winnerID) {
   ST7735_FillScreen(ST7735_BLACK);
   ST7735_SetTextColor(0xFFFF);
   ST7735_SetCursor(2, 3);
-  ST7735_OutString((char *)(language == 0 ? "*** GAME OVER ***" : "*** FIN DEL JUEGO ***"));
+  ST7735_OutString((char *)(language == 0 ? "*** GAME OVER ***" : "  FIN DEL JUEGO"));
 
   ST7735_SetCursor(2, 5);
   if (winnerID == 1)
@@ -454,10 +470,9 @@ void EndGame(uint8_t winnerID) {
     ST7735_OutString((char *)(language == 0 ? "Player 2 Wins!" : "¡Jugador 2 Gana!"));
 
   ST7735_SetCursor(2, 7);
-  ST7735_OutString((char *)(language == 0 ? "Press any btn..." : "Presiona un botón..."));
+  ST7735_OutString((char *)(language == 0 ? "Press any btn..." : "Presiona un boton"));
 
   while (!(Switch_P1B1() || Switch_P1B2() || Switch_P2B1() || Switch_P2B2())); 
   Clock_Delay1ms(1000);
   returnToMenu = true;
 }
-

@@ -14,8 +14,8 @@
 #define JOY2_BUTTON_PIN 11 // PA11
 
 
-#define DEADZONE_LOW   2000
-#define DEADZONE_HIGH  3300
+#define DEADZONE_LOW   1800
+#define DEADZONE_HIGH  2900
 
 void Joystick_Init(void) {
     // Initialize ADC1 once using one of the channels as a baseline.
